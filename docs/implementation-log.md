@@ -112,3 +112,18 @@ Documentation gate accessed 2026-08-08 14:54 PDT:
 | https://docs.expo.dev/versions/latest/ | `Each Expo SDK version depends on a React Native version`; `Support for Android and iOS versions` | Expo SDK 57, React Native 0.86, React 19.2.3, Node 22.13.x minimum | Current Node 22.17.0 passes; SDK baseline unchanged. |
 
 The repository is no longer empty because the specification, Phase 0 evidence, prerequisite guide, and ADR are tracked. The official target-directory command will be attempted without deleting or overwriting those user/project records. Any scaffold conflict will be recorded before choosing a recoverable integration path.
+
+### Phase 1 execution and verification
+
+| Command/check | Result |
+| --- | --- |
+| `npx create-expo-app@latest . --template default@sdk-57` | First attempt exited without mutation because `.env.local`, `.vscode`, `AGENTS.md`, and the specification conflicted. Those paths were moved to an explicit temporary directory, the exact command was rerun, and the ignored environment plus specification were restored. Expo's generated agent/editor files were committed untouched before manual merging. |
+| `npm install` invoked by create-expo-app | Installed 594 packages. npm reported 22 audit findings (8 moderate, 14 high). No automatic or forced audit rewrite was run because the specification forbids forced version changes. |
+| `npx expo-doctor` | PASS, 20/20 checks. |
+| `npx expo config --type public` | PASS; dynamic `app.config.ts` resolves. |
+| Secret ignore and tracked-pattern checks | PASS after the manual hardening commit restored `.env`, `secrets/`, provider-file, coverage, and log ignores. No credential-like tracked value detected by the baseline pattern scan. |
+| `npx tsc --noEmit` | FAIL on the untouched scaffold's CSS module and side-effect CSS imports. Phase 2 must add the official TypeScript/OXC baseline before type checking can be accepted. |
+| iOS launch | INCOMPLETE: installed simulators exist but none was booted at the Phase 1 checkpoint. |
+| Android launch | INCOMPLETE: `adb` and an emulator remain unavailable. |
+
+Commits: `ff154bb` contains only official CLI output; `0132776` contains manual safety/configuration changes. Native identity and scheme are omitted under ADR 0001. Phase 1 is implemented but its two-platform acceptance remains incomplete.
