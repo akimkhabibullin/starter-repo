@@ -56,3 +56,23 @@ Phase 0 cannot meet acceptance until all of the following are supplied or instal
 7. Test identities and interactive provider-account state needed for behavioral auth/RLS/deletion verification.
 
 Result: `BLOCKED_PREREQUISITES`. Per sections 6, 10 Phase 0, 12, and 13 of the specification, Phase 1 scaffolding and later phases were not started and the starter must not be represented as complete.
+
+## Prerequisite setup guide evidence
+
+Accessed 2026-08-08 13:36 PDT before writing `docs/prerequisite-setup-guide.md`:
+
+| Official URL | Heading/pattern used | Purpose |
+| --- | --- | --- |
+| https://docs.expo.dev/eas/environment-variables/ | `Available environments`; `Variable types`; `Visibility settings` | Development/preview/production separation and public/sensitive/secret/file classification. |
+| https://docs.expo.dev/eas/environment-variables/manage/ | `Create environment variables`; `Secrets and file variables` | EAS dashboard/CLI placement and Google service file handling. |
+| https://supabase.com/docs/guides/getting-started/quickstarts/expo-react-native | `Get API details` | Project URL and publishable key from the Connect dialog. |
+| https://supabase.com/docs/guides/auth/quickstarts/with-expo-react-native-social-auth | Current Expo social-auth configuration | Native provider prerequisites and app configuration. |
+| https://supabase.com/docs/guides/auth/social-login/auth-google | Google provider configuration | Web/iOS/Android client-ID ordering and server-side client secret. |
+| https://supabase.com/docs/guides/auth/social-login/auth-apple | `Secret Key Rotation Required`; Services ID/signing key setup | Apple App ID, Services ID, `.p8`, provider configuration, and rotation. |
+| https://developer.apple.com/help/account/membership/program-enrollment/ | `Enrollment`; `Contract developers` | Correct account ownership and organization enrollment. |
+| https://developers.google.com/identity/protocols/oauth2/native-app | `Create authorization credentials` | Platform-specific OAuth client creation. |
+| https://developers.google.com/maps/documentation/android-sdk/get-api-key | Maps SDK Android setup checklist | Cloud project, billing/API enablement, and Android map key. |
+| https://developers.google.com/maps/api-security-best-practices | `Restrict your API keys` | Application and API restrictions. |
+| https://docs.expo.dev/guides/using-sentry/ | `Usage with EAS Build`; `Usage with EAS Update` | Public DSN versus sensitive source-map auth token. |
+
+No account was created and no external dashboard or secret was modified. The guide contains placeholders only.
