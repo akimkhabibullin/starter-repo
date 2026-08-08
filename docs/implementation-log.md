@@ -101,3 +101,14 @@ Result remains `BLOCKED_PREREQUISITES`. Phase 1 was not started.
 The user directed the implementation to continue while skipping Apple setup, the custom app scheme, iOS bundle identifier, Android package identifier, and privacy/terms/support configuration. ADR 0001 records the deviation and its consequences.
 
 Status changed from `BLOCKED_PREREQUISITES` to `PARTIALLY_IMPLEMENTED_SCOPE_AMENDMENT`. This permits development scaffolding to proceed but does not make the original Phase 0 acceptance pass. Apple auth/revocation, deep-link verification, stable native builds, store/legal compliance, and final release-like acceptance remain incomplete until the decision is reversed.
+
+## Phase 1 — Official Expo scaffold
+
+Documentation gate accessed 2026-08-08 14:54 PDT:
+
+| Official URL | Heading used | Selected command/pattern | Result |
+| --- | --- | --- | --- |
+| https://docs.expo.dev/more/create-expo/ | `Create a new project`; `--template`; `npm` | `npx create-expo-app@latest . --template default@sdk-57` | SDK 57 remains the documented non-Expo-Go development baseline; command pending. |
+| https://docs.expo.dev/versions/latest/ | `Each Expo SDK version depends on a React Native version`; `Support for Android and iOS versions` | Expo SDK 57, React Native 0.86, React 19.2.3, Node 22.13.x minimum | Current Node 22.17.0 passes; SDK baseline unchanged. |
+
+The repository is no longer empty because the specification, Phase 0 evidence, prerequisite guide, and ADR are tracked. The official target-directory command will be attempted without deleting or overwriting those user/project records. Any scaffold conflict will be recorded before choosing a recoverable integration path.
