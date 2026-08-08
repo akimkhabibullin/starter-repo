@@ -127,3 +127,17 @@ The repository is no longer empty because the specification, Phase 0 evidence, p
 | Android launch | INCOMPLETE: `adb` and an emulator remain unavailable. |
 
 Commits: `ff154bb` contains only official CLI output; `0132776` contains manual safety/configuration changes. Native identity and scheme are omitted under ADR 0001. Phase 1 is implemented but its two-platform acceptance remains incomplete.
+
+## Phase 2 — OXC quality baseline and strict TypeScript
+
+Documentation gate accessed 2026-08-08 14:59 PDT:
+
+| Official URL | Heading used | Selected command/pattern |
+| --- | --- | --- |
+| https://oxc.rs/docs/guide/usage/linter | `Getting started` | Install Oxlint as a development dependency and use `oxlint` / `oxlint --fix` scripts. |
+| https://oxc.rs/docs/guide/usage/linter/type-aware.html | `Installation`; `Running type-aware linting`; `TypeScript compatibility` | `npm add -D oxlint-tsgolint@latest`; run `oxlint --type-aware`; keep separate `tsc --noEmit` per the specification. The page notes TypeScript 7 semantics while the Expo SDK 57 scaffold currently resolves TypeScript 6.0.3; compatibility must be verified, not assumed. |
+| https://oxc.rs/docs/guide/usage/formatter/quickstart.html | `Install`; `Create a config file` | `npm add -D oxfmt`; scripts `oxfmt` and `oxfmt --check`; generate defaults with `oxfmt --init`. |
+| https://oxc.rs/docs/guide/usage/formatter/config.html | `Create a config file`; `Configuration file format` | Commit root `.oxfmtrc.json`; use stable JSON fields and ignore patterns only. |
+| https://docs.expo.dev/guides/typescript/ | `Add base configuration with tsconfig.json`; `Type checking project files with tsc` | Extend `expo/tsconfig.base`, enable `strict`, and retain independent TypeScript checking. |
+
+Selected install command: `npm add -D oxlint oxlint-tsgolint@latest oxfmt`. No experimental OXC feature is enabled.
