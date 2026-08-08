@@ -95,3 +95,9 @@ The user indicated prerequisite setup was complete, so the gate was rerun withou
 | Secret handling | `.env.local` and provider-secret paths are ignored; no values were printed or committed. |
 
 Result remains `BLOCKED_PREREQUISITES`. Phase 1 was not started.
+
+### Explicit scope amendment — 2026-08-08
+
+The user directed the implementation to continue while skipping Apple setup, the custom app scheme, iOS bundle identifier, Android package identifier, and privacy/terms/support configuration. ADR 0001 records the deviation and its consequences.
+
+Status changed from `BLOCKED_PREREQUISITES` to `PARTIALLY_IMPLEMENTED_SCOPE_AMENDMENT`. This permits development scaffolding to proceed but does not make the original Phase 0 acceptance pass. Apple auth/revocation, deep-link verification, stable native builds, store/legal compliance, and final release-like acceptance remain incomplete until the decision is reversed.
