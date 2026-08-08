@@ -76,3 +76,22 @@ Accessed 2026-08-08 13:36 PDT before writing `docs/prerequisite-setup-guide.md`:
 | https://docs.expo.dev/guides/using-sentry/ | `Usage with EAS Build`; `Usage with EAS Update` | Public DSN versus sensitive source-map auth token. |
 
 No account was created and no external dashboard or secret was modified. The guide contains placeholders only.
+
+### Phase 0 prerequisite recheck — 2026-08-08 14:47 PDT
+
+The user indicated prerequisite setup was complete, so the gate was rerun without printing values.
+
+| Check | Result |
+| --- | --- |
+| Branch/worktree | `implementation/mobile-starter`; clean before logging this result. |
+| Node/npm/Xcode | Node 22.17.0, npm 10.9.2, Xcode 26.5 — pass SDK 57 minimums. |
+| Environment names/formats | Failed: app name, scheme, bundle/package identifiers, legal/support URLs, Expo project/token, and Apple server values remain missing or contain setup-guide placeholders. |
+| Provider files | Referenced Google service files are absent; whether each is required will be confirmed at the native social-auth documentation gate. |
+| iOS Simulator | Installed devices exist, but none is booted. |
+| Android | `adb` remains unavailable; no emulator can be verified. |
+| Container runtime | Docker-compatible CLI/runtime remains unavailable. |
+| Maestro | CLI remains unavailable. |
+| Java | Java 25.0.1 is active; the current Expo Android setup page specifies JDK 17. |
+| Secret handling | `.env.local` and provider-secret paths are ignored; no values were printed or committed. |
+
+Result remains `BLOCKED_PREREQUISITES`. Phase 1 was not started.
