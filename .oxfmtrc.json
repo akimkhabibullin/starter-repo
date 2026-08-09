@@ -1,4 +1,20 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": []
+  "printWidth": 100,
+  "singleQuote": true,
+  "semi": true,
+  "trailingComma": "all",
+  "ignorePatterns": [
+    ".expo/**",
+    ".claude/**",
+    "assets/**",
+    "coverage/**",
+    "dist/**",
+    "node_modules/**",
+    "MOBILE_STARTER_IMPLEMENTATION_SPEC.md",
+    "package-lock.json",
+    "src/types/database.generated.ts",
+    "supabase/.branches/**",
+    "supabase/.temp/**"
+  ]
 }

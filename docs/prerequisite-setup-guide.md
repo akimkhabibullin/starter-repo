@@ -8,17 +8,17 @@ Do not paste credentials or private keys into chat. Put them only in the ignored
 
 Choose these values before creating OAuth clients because changing them later invalidates provider configuration and usually requires a new native build.
 
-| Decision | Example | Rule |
-| --- | --- | --- |
-| Display name | `Map Starter` | Generic user-facing app name. |
-| Expo slug | `map-starter` | Lowercase URL-safe project slug. |
-| URL scheme | `mapstarter` | Lowercase scheme with no `://`; used for deep links. |
-| iOS bundle identifier | `com.yourcompany.mapstarter` | Unique reverse-domain identifier; do not use the example literally. |
-| Android package | `com.yourcompany.mapstarter` | Normally match the iOS identifier. |
-| Support email | `support@yourdomain.com` | A monitored inbox. |
-| Privacy URL | `https://yourdomain.com/privacy` | Must be a real public HTTPS page before release. |
-| Terms/AUP URL | `https://yourdomain.com/terms` | Must cover terms and acceptable use for shared content. |
-| Support URL | `https://yourdomain.com/support` | Must be a real public HTTPS support page. |
+| Decision              | Example                          | Rule                                                                |
+| --------------------- | -------------------------------- | ------------------------------------------------------------------- |
+| Display name          | `Map Starter`                    | Generic user-facing app name.                                       |
+| Expo slug             | `map-starter`                    | Lowercase URL-safe project slug.                                    |
+| URL scheme            | `mapstarter`                     | Lowercase scheme with no `://`; used for deep links.                |
+| iOS bundle identifier | `com.yourcompany.mapstarter`     | Unique reverse-domain identifier; do not use the example literally. |
+| Android package       | `com.yourcompany.mapstarter`     | Normally match the iOS identifier.                                  |
+| Support email         | `support@yourdomain.com`         | A monitored inbox.                                                  |
+| Privacy URL           | `https://yourdomain.com/privacy` | Must be a real public HTTPS page before release.                    |
+| Terms/AUP URL         | `https://yourdomain.com/terms`   | Must cover terms and acceptable use for shared content.             |
+| Support URL           | `https://yourdomain.com/support` | Must be a real public HTTPS support page.                           |
 
 Record the final values somewhere secure. Use exactly the same identifiers in Expo, Apple, Google, Supabase redirect settings, and the environment file.
 
@@ -199,13 +199,13 @@ APPLE_PRIVATE_KEY_BASE64=REPLACE_ME
 
 ### Variable classification
 
-| Classification | Variables | Where they belong |
-| --- | --- | --- |
-| Public/mobile bundle | Every `EXPO_PUBLIC_*` variable | `.env.local`; EAS `development`, `preview`, and `production` as plaintext. Public does not mean unrestricted: restrict the Android Maps key. |
-| Non-secret identifiers | `EXPO_OWNER`, `EXPO_PROJECT_ID`, `SUPABASE_PROJECT_REF`, `SENTRY_ORG`, `SENTRY_PROJECT` | `.env.local`; EAS/CI where needed. Never import into client code. |
-| Private tokens/passwords | `EXPO_TOKEN`, `SUPABASE_ACCESS_TOKEN`, `SUPABASE_DB_PASSWORD`, `SENTRY_AUTH_TOKEN` | `.env.local` and approved EAS/CI secret stores only. `SENTRY_AUTH_TOKEN` must be sensitive for source-map tools. |
-| File paths | `GOOGLE_SERVICES_JSON`, `GOOGLE_SERVICE_INFO_PLIST` | Local ignored paths; use EAS file variables for cloud builds. |
-| Apple server secrets | `APPLE_TEAM_ID`, `APPLE_KEY_ID`, `APPLE_CLIENT_ID`, `APPLE_PRIVATE_KEY_BASE64` | `.env.local` only until synchronized to Supabase Edge Function secrets; never client code or EAS public variables. |
+| Classification           | Variables                                                                               | Where they belong                                                                                                                            |
+| ------------------------ | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Public/mobile bundle     | Every `EXPO_PUBLIC_*` variable                                                          | `.env.local`; EAS `development`, `preview`, and `production` as plaintext. Public does not mean unrestricted: restrict the Android Maps key. |
+| Non-secret identifiers   | `EXPO_OWNER`, `EXPO_PROJECT_ID`, `SUPABASE_PROJECT_REF`, `SENTRY_ORG`, `SENTRY_PROJECT` | `.env.local`; EAS/CI where needed. Never import into client code.                                                                            |
+| Private tokens/passwords | `EXPO_TOKEN`, `SUPABASE_ACCESS_TOKEN`, `SUPABASE_DB_PASSWORD`, `SENTRY_AUTH_TOKEN`      | `.env.local` and approved EAS/CI secret stores only. `SENTRY_AUTH_TOKEN` must be sensitive for source-map tools.                             |
+| File paths               | `GOOGLE_SERVICES_JSON`, `GOOGLE_SERVICE_INFO_PLIST`                                     | Local ignored paths; use EAS file variables for cloud builds.                                                                                |
+| Apple server secrets     | `APPLE_TEAM_ID`, `APPLE_KEY_ID`, `APPLE_CLIENT_ID`, `APPLE_PRIVATE_KEY_BASE64`          | `.env.local` only until synchronized to Supabase Edge Function secrets; never client code or EAS public variables.                           |
 
 ## 5. Configure cloud environments later
 

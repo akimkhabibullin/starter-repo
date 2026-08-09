@@ -1,7 +1,21 @@
 {
   "name": "starter-repo",
-  "main": "expo-router/entry",
   "version": "1.0.0",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "reset-project": "node ./scripts/reset-project.js",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "lint": "oxlint --type-aware",
+    "lint:fix": "oxlint --type-aware --fix",
+    "typecheck": "tsc --noEmit",
+    "quality": "npm run fmt:check && npm run lint && npm run typecheck && npx expo-doctor"
+  },
   "dependencies": {
     "@expo/ui": "~57.0.9",
     "expo": "~57.0.11",
@@ -33,14 +47,5 @@
     "oxlint": "^1.77.0",
     "oxlint-tsgolint": "^7.0.2001",
     "typescript": "~6.0.3"
-  },
-  "scripts": {
-    "start": "expo start",
-    "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "lint": "expo lint"
-  },
-  "private": true
+  }
 }
