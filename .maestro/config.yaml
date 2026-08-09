@@ -1,0 +1,11 @@
+flows:
+  - '*.yaml'
+executionOrder:
+  continueOnFailure: false
+  flowsOrder:
+    - unauthenticated-launch
+    - email-sign-in
+    - map-content
+    - create-map-content
+    - moderation-and-session
+    - account-deletion

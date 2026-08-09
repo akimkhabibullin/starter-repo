@@ -1,0 +1,33 @@
+appId: ${MAESTRO_APP_ID}
+name: Create a point and collaborative update
+tags:
+  - map
+  - destructive
+---
+- runFlow:
+    file: helpers/sign-in.yaml
+    env:
+      FLOW_EMAIL: ${MAESTRO_TEST_EMAIL}
+      FLOW_PASSWORD: ${MAESTRO_TEST_PASSWORD}
+- tapOn:
+    id: select-map-center-point
+- tapOn: Map item title
+- inputText: Maestro point
+- tapOn: Map item description
+- inputText: Created by isolated E2E automation
+- hideKeyboard
+- tapOn:
+    id: submit-map-item
+- extendedWaitUntil:
+    visible: Map item created.
+    timeout: 15000
+- assertVisible: Maestro point
+- tapOn: Collaborative update
+- inputText: Maestro collaborative update
+- hideKeyboard
+- tapOn:
+    id: submit-map-update
+- extendedWaitUntil:
+    visible: Update added.
+    timeout: 15000
+- assertVisible: Maestro collaborative update

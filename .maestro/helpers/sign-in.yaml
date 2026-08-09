@@ -1,0 +1,18 @@
+appId: ${MAESTRO_APP_ID}
+---
+- launchApp:
+    clearState: true
+- tapOn:
+    id: open-sign-in
+- tapOn:
+    id: sign-in-email
+- inputText: ${FLOW_EMAIL}
+- tapOn:
+    id: sign-in-password
+- inputText: ${FLOW_PASSWORD}
+- hideKeyboard
+- tapOn:
+    id: submit-sign-in
+- extendedWaitUntil:
+    visible: Collaborative map
+    timeout: 15000

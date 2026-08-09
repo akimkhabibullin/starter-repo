@@ -1,0 +1,40 @@
+appId: ${MAESTRO_APP_ID}
+name: Report, block, unblock, and sign out
+tags:
+  - moderation
+  - destructive
+---
+- runFlow:
+    file: helpers/sign-in.yaml
+    env:
+      FLOW_EMAIL: ${MAESTRO_TEST_EMAIL}
+      FLOW_PASSWORD: ${MAESTRO_TEST_PASSWORD}
+- extendedWaitUntil:
+    visible: Synthetic point 1
+    timeout: 15000
+- tapOn: Synthetic point 1
+- tapOn:
+    id: report-selected-item
+- assertVisible: Report content
+- tapOn:
+    id: submit-content-report
+- extendedWaitUntil:
+    visible: Report submitted for human review.
+    timeout: 15000
+- tapOn:
+    id: block-user-00000000-0000-4000-8000-000000000001
+- extendedWaitUntil:
+    visible: User blocked. Their content is now hidden.
+    timeout: 15000
+- tapOn:
+    id: open-settings
+- assertVisible: Blocked users
+- tapOn: Unblock
+- extendedWaitUntil:
+    visible: You have not blocked anyone.
+    timeout: 15000
+- tapOn:
+    id: settings-sign-out
+- extendedWaitUntil:
+    visible: Map Starter
+    timeout: 15000

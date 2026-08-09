@@ -1,0 +1,13 @@
+appId: ${MAESTRO_APP_ID}
+name: Email sign in
+tags:
+  - smoke
+---
+- runFlow:
+    file: helpers/sign-in.yaml
+    env:
+      FLOW_EMAIL: ${MAESTRO_TEST_EMAIL}
+      FLOW_PASSWORD: ${MAESTRO_TEST_PASSWORD}
+- assertVisible: Collaborative map
+- assertVisible:
+    id: collaborative-map
