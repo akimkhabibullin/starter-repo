@@ -2,7 +2,7 @@ begin;
 
 create extension if not exists pgtap with schema extensions;
 
-select plan(23);
+select plan(25);
 
 insert into auth.users (id, email, raw_user_meta_data)
 values
@@ -237,6 +237,28 @@ select results_eq(
     where moderation_status <> 'visible'$$,
   array[0::bigint],
   'Hidden or rejected content is not returned to ordinary users'
+);
+
+select results_eq(
+  $$select count(*) from public.map_items_in_view(
+      37.76::double precision,
+      -122.43::double precision,
+      37.79::double precision,
+      -122.40::double precision
+    )$$,
+  array[2::bigint],
+  'The viewport RPC returns only visible items intersecting bounded coordinates'
+);
+
+select results_eq(
+  $$select count(*) from public.map_items_in_view(
+      91::double precision,
+      -122.43::double precision,
+      92::double precision,
+      -122.40::double precision
+    )$$,
+  array[0::bigint],
+  'The viewport RPC rejects out-of-range coordinate bounds with an empty result'
 );
 
 select throws_ok(
