@@ -104,6 +104,7 @@ export function ReportForm({ onCancel, onSubmitted, target }: ReportFormProps) {
           disabled={report.isPending}
           onPress={() => void handleSubmit((draft) => report.mutate(draft))()}
           style={[styles.reportButton, report.isPending ? styles.disabled : null]}
+          testID="submit-content-report"
         >
           <Text style={styles.reportButtonText}>
             {report.isPending ? 'Submitting…' : 'Submit report'}
@@ -141,6 +142,7 @@ export function BlockUserButton({ authorId, onBlocked }: BlockUserButtonProps) {
         disabled={block.isPending}
         onPress={() => block.mutate(authorId)}
         style={[styles.blockButton, block.isPending ? styles.disabled : null]}
+        testID={`block-user-${authorId}`}
       >
         <Text style={styles.blockButtonText}>{block.isPending ? 'Blocking…' : 'Block user'}</Text>
       </Pressable>

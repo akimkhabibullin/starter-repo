@@ -92,11 +92,12 @@ interface ItemFormProps {
   initial?: MapItemDraft;
   label: string;
   pending: boolean;
+  testID: string;
   onCancel: () => void;
   onSubmit: (draft: MapItemDraft) => void;
 }
 
-function ItemForm({ initial, label, pending, onCancel, onSubmit }: ItemFormProps) {
+function ItemForm({ initial, label, pending, testID, onCancel, onSubmit }: ItemFormProps) {
   const {
     control,
     formState: { errors },
@@ -147,6 +148,7 @@ function ItemForm({ initial, label, pending, onCancel, onSubmit }: ItemFormProps
           disabled={pending}
           onPress={() => void handleSubmit(onSubmit)()}
           style={[styles.primaryButton, pending ? styles.disabled : null]}
+          testID={testID}
         >
           <Text style={styles.primaryButtonText}>{pending ? 'Saving…' : label}</Text>
         </Pressable>
@@ -162,11 +164,12 @@ interface UpdateFormProps {
   initial?: MapUpdateDraft;
   label: string;
   pending: boolean;
+  testID: string;
   onCancel?: () => void;
   onSubmit: (draft: MapUpdateDraft) => void;
 }
 
-function UpdateForm({ initial, label, pending, onCancel, onSubmit }: UpdateFormProps) {
+function UpdateForm({ initial, label, pending, testID, onCancel, onSubmit }: UpdateFormProps) {
   const {
     control,
     formState: { errors },
@@ -205,6 +208,7 @@ function UpdateForm({ initial, label, pending, onCancel, onSubmit }: UpdateFormP
           disabled={pending}
           onPress={() => void handleSubmit(submit)()}
           style={[styles.primaryButton, pending ? styles.disabled : null]}
+          testID={testID}
         >
           <Text style={styles.primaryButtonText}>{pending ? 'Saving…' : label}</Text>
         </Pressable>
@@ -401,7 +405,7 @@ export function CollaborativeMapScreen() {
           <Text style={styles.outlineButtonText}>Use my location</Text>
         </Pressable>
         <Link href="/settings" asChild>
-          <Pressable accessibilityRole="button" style={styles.outlineButton}>
+          <Pressable accessibilityRole="button" style={styles.outlineButton} testID="open-settings">
             <Text style={styles.outlineButtonText}>Settings</Text>
           </Pressable>
         </Link>
@@ -454,6 +458,7 @@ export function CollaborativeMapScreen() {
             const coordinate = coordinates[0];
             return coordinate ? (
               <Marker
+                accessibilityLabel={`${item.title} marker`}
                 coordinate={coordinate}
                 key={item.id}
                 onPress={() => setSelectedId(item.id)}
@@ -463,6 +468,7 @@ export function CollaborativeMapScreen() {
           }
           return (
             <Polygon
+              accessibilityLabel={`${item.title} polygon`}
               coordinates={coordinates}
               fillColor="rgba(37, 99, 235, 0.22)"
               key={item.id}
@@ -496,6 +502,7 @@ export function CollaborativeMapScreen() {
           setStatus('Map center selected for a new point.');
         }}
         style={styles.outlineButton}
+        testID="select-map-center-point"
       >
         <Text style={styles.outlineButtonText}>Select map center for point</Text>
       </Pressable>
@@ -513,6 +520,7 @@ export function CollaborativeMapScreen() {
             onCancel={() => setCreationDraft(undefined)}
             onSubmit={(draft) => creation.mutate(draft)}
             pending={creation.isPending}
+            testID="submit-map-item"
           />
         </View>
       ) : null}
@@ -554,6 +562,7 @@ export function CollaborativeMapScreen() {
             key={item.id}
             onPress={() => setSelectedId(item.id)}
             style={styles.listItem}
+            testID={`map-item-${item.id}`}
           >
             <Text style={styles.itemTitle}>{item.title}</Text>
             <Text numberOfLines={2} style={styles.hint}>
@@ -588,6 +597,7 @@ export function CollaborativeMapScreen() {
                 onCancel={() => setEditingItem(false)}
                 onSubmit={(draft) => itemEdit.mutate(draft)}
                 pending={itemEdit.isPending}
+                testID="save-map-item"
               />
             ) : (
               <View style={styles.buttonRow}>
@@ -620,6 +630,7 @@ export function CollaborativeMapScreen() {
                 })
               }
               style={styles.reportAction}
+              testID="report-selected-item"
             >
               <Text style={styles.reportActionText}>Report item</Text>
             </Pressable>
@@ -666,6 +677,7 @@ export function CollaborativeMapScreen() {
                   onCancel={() => setEditingUpdate(undefined)}
                   onSubmit={(draft) => updateEdit.mutate(draft)}
                   pending={updateEdit.isPending}
+                  testID="save-map-update"
                 />
               ) : (
                 <>
@@ -732,6 +744,7 @@ export function CollaborativeMapScreen() {
             label="Add update"
             onSubmit={(draft) => updateCreation.mutate(draft)}
             pending={updateCreation.isPending}
+            testID="submit-map-update"
           />
         </View>
       ) : null}
