@@ -30,8 +30,8 @@ const config: ExpoConfig = {
       '@sentry/react-native/expo',
       {
         url: 'https://sentry.io/',
-        project: 'javascript-nextjs',
-        organization: 'akims-apps',
+        project: process.env.SENTRY_PROJECT,
+        organization: process.env.SENTRY_ORG,
       },
     ],
     [

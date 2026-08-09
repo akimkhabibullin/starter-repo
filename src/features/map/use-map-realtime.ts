@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { captureUnexpectedError } from '@/lib/monitoring';
 import { queryClient } from '@/lib/query/client';
 import { queryKeys } from '@/lib/query/keys';
 import { getSupabaseClient } from '@/lib/supabase/client';
@@ -39,7 +40,7 @@ export function useMapRealtime(selectedItemId: string | undefined): void {
       )
       .subscribe((status) => {
         if (ERROR_CHANNEL_STATUSES.has(status)) {
-          console.error('Map synchronization channel is unavailable.');
+          captureUnexpectedError(new Error('Map synchronization channel is unavailable.'));
         }
       });
 

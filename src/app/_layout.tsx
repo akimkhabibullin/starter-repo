@@ -7,6 +7,7 @@ import { ConfigurationScreen } from '@/components/configuration-screen';
 import { LoadingScreen } from '@/components/loading-screen';
 import { clientEnvResult, getClientEnvIssueFields } from '@/config/env';
 import { useAuth } from '@/features/auth/auth-context';
+import { wrapRootComponent } from '@/lib/monitoring';
 
 function AppNavigator() {
   const { restoring, session } = useAuth();
@@ -31,7 +32,7 @@ function AppNavigator() {
   );
 }
 
-export default function RootLayout() {
+function RootLayout() {
   if (!clientEnvResult.success) {
     return <ConfigurationScreen issueFields={getClientEnvIssueFields()} />;
   }
@@ -44,3 +45,5 @@ export default function RootLayout() {
     </AppErrorBoundary>
   );
 }
+
+export default wrapRootComponent(RootLayout);

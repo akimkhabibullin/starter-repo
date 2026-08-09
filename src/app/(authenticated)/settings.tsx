@@ -9,6 +9,7 @@ import { Screen } from '@/components/screen';
 import { signOut } from '@/features/auth/api';
 import { useAuth } from '@/features/auth/auth-context';
 import { deleteAccount, listBlockedUsers, unblockUser } from '@/features/settings/api';
+import { throwMonitoringDiagnostic } from '@/lib/monitoring';
 import { queryClient } from '@/lib/query/client';
 import { queryKeys } from '@/lib/query/keys';
 import { normalizeApplicationError } from '@/lib/supabase/errors';
@@ -114,6 +115,17 @@ export default function SettingsScreen() {
         <Text style={styles.secondaryText}>Runtime {displayValue(Updates.runtimeVersion)}</Text>
         <Text style={styles.secondaryText}>Update {displayValue(Updates.updateId)}</Text>
       </View>
+
+      {__DEV__ ? (
+        <Pressable
+          accessibilityRole="button"
+          onPress={throwMonitoringDiagnostic}
+          style={styles.outlineButton}
+          testID="monitoring-diagnostic"
+        >
+          <Text style={styles.outlineButtonText}>Trigger monitoring diagnostic</Text>
+        </Pressable>
+      ) : null}
 
       {error ? (
         <Text accessibilityRole="alert" style={styles.error}>

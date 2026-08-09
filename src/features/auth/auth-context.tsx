@@ -8,6 +8,7 @@ import {
 } from 'react';
 import * as Linking from 'expo-linking';
 
+import { setMonitoringUser } from '@/lib/monitoring';
 import { getSupabaseClient, type Session } from '@/lib/supabase/client';
 
 import { processAuthRedirect } from './api';
@@ -46,6 +47,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
       subscription.unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    setMonitoringUser(session?.user.id);
+  }, [session?.user.id]);
 
   useEffect(() => {
     const handleUrl = (url: string | null) => {

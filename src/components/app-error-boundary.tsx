@@ -1,6 +1,8 @@
 import { Component, type ErrorInfo, type PropsWithChildren, type ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { captureUnexpectedError } from '@/lib/monitoring';
+
 type State = { failed: boolean };
 
 export class AppErrorBoundary extends Component<PropsWithChildren, State> {
@@ -10,8 +12,8 @@ export class AppErrorBoundary extends Component<PropsWithChildren, State> {
     return { failed: true };
   }
 
-  override componentDidCatch(_error: Error, _info: ErrorInfo): void {
-    // Phase 12 connects this boundary to the sanitized monitoring adapter.
+  override componentDidCatch(error: Error, _info: ErrorInfo): void {
+    captureUnexpectedError(error);
   }
 
   override render(): ReactNode {
@@ -20,7 +22,7 @@ export class AppErrorBoundary extends Component<PropsWithChildren, State> {
         <View accessibilityRole="alert" style={styles.container}>
           <Text style={styles.title}>Something went wrong</Text>
           <Text style={styles.body}>
-            Close and reopen the app. If this continues, contact support.
+            Close and reopen the app. If this continues, try again later.
           </Text>
         </View>
       );
