@@ -337,3 +337,18 @@ The Settings implementation will include profile summary, blocked-user managemen
 | Explicitly deferred requirements | INCOMPLETE by user direction: Apple reauthentication/revocation, Apple Function secrets, privacy policy, terms, and support are absent. Apple-linked deletion intentionally fails closed. Analytics identity clearing also awaits the monitoring phase because no analytics SDK is present yet.                                   |
 
 Phase 9 is partially implemented. The safe non-Apple code paths and Settings UI are present, while provider, server, and authenticated end-to-end acceptance remain blocked or explicitly deferred.
+
+## Phase 10 — Collaborative map, PostGIS, and Realtime
+
+Documentation gate accessed 2026-08-08:
+
+| Official URL                                                        | Heading used                                  | Selected command/pattern                                                                                                                                                           |
+| ------------------------------------------------------------------- | --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| https://docs.expo.dev/versions/latest/sdk/map-view/                 | Installation; Deploy app with Google Maps     | Install with `npx expo install react-native-maps`; SDK 57 recommends 1.27.2. Configure `plugins.react-native-maps.androidGoogleMapsApiKey` and use the Google provider on Android. |
+| https://github.com/react-native-maps/react-native-maps              | General Usage; markers and polygons           | Render `Marker` and `Polygon` as declarative `MapView` children. Current Fabric compatibility includes React Native 0.86.                                                          |
+| https://docs.expo.dev/versions/latest/sdk/location/                 | Foreground permissions; current position      | Install with `npx expo install expo-location`; request foreground permission only on the explicit user action, then call `getCurrentPositionAsync` only when granted.              |
+| https://supabase.com/docs/guides/database/extensions/postgis        | Finding all data points within a bounding box | Add a SQL RPC using PostGIS `&&`, `ST_MakeBox2D`, and SRID 4326; call it with `supabase.rpc` whenever the settled viewport changes.                                                |
+| https://supabase.com/docs/guides/realtime/postgres-changes          | Listening to multiple changes                 | Use one mounted channel with table-scoped `postgres_changes` listeners; callbacks invalidate Query keys without copying payload rows into another cache.                           |
+| https://tanstack.com/query/latest/docs/framework/react/react-native | Refetch on App focus                          | Retain the existing AppState/focus-manager integration and keep viewport reads and mutations behind TanStack Query.                                                                |
+
+Selected install command: `npx expo install react-native-maps expo-location`. The Android package remains intentionally unset under ADR 0001, so a restricted production Android map-key acceptance test cannot run; the public key can still be wired through the documented config-plugin field. A new CLI-generated migration is required for the bounded viewport RPC before the client implementation. Runtime database, two-session, and Android acceptance remain dependent on the missing local backend and Android tooling.
