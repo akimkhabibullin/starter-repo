@@ -141,3 +141,19 @@ Documentation gate accessed 2026-08-08 14:59 PDT:
 | https://docs.expo.dev/guides/typescript/                  | `Add base configuration with tsconfig.json`; `Type checking project files with tsc` | Extend `expo/tsconfig.base`, enable `strict`, and retain independent TypeScript checking.                                                                                                                                                                                  |
 
 Selected install command: `npm add -D oxlint oxlint-tsgolint@latest oxfmt`. No experimental OXC feature is enabled.
+
+### Phase 2 verification
+
+`npm run fmt`, `npm run fmt:check`, `npm run lint`, `npm run typecheck`, and `npx expo-doctor` all pass. Expo Doctor reports 20/20 checks. Type-aware linting runs successfully with the Expo-resolved TypeScript 6 project, while tsgolint supplies its documented TypeScript 7 semantic engine. No OXC type-check experiment is enabled; `tsc --noEmit` remains independent.
+
+## Phase 3 — Environment validation and generic app shell
+
+Documentation gate accessed 2026-08-08:
+
+| Official URL                                        | Heading used                                                        | Selected command/pattern                                                              |
+| --------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| https://docs.expo.dev/guides/environment-variables/ | `How to read from environment variables`; `Security considerations` | Use static dot notation for every `EXPO_PUBLIC_` read; never bundle secrets.          |
+| https://zod.dev/                                    | `Installation`; `Requirements`                                      | `npm install zod`; Zod 4 stable with strict TypeScript.                               |
+| https://docs.expo.dev/router/introduction/          | `Quick start`; `Key features`                                       | Keep file-based routes under `src/app` and compose public/authenticated route groups. |
+
+ADR 0001 makes native identity, scheme, Apple, and legal/support variables optional/deferred. Required Supabase, Google, Sentry, environment-name, and generic app-name values remain validated. Selected install command: `npm install zod`.
