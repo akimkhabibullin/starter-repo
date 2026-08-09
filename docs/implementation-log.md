@@ -262,3 +262,18 @@ Documentation gate accessed 2026-08-08:
 | https://docs.expo.dev/versions/latest/sdk/network/                                   | Installation                           | `npx expo install expo-network`; SDK 57 recommended version is `~57.0.1`.                                                                                                         |
 
 ADR 0002 records the required social-auth storage choice. `react-native-url-polyfill` remains a direct dependency because both current Supabase client examples import it, even though the social-auth installation snippet omits it.
+
+### Phase 7 verification
+
+| Check                          | Result                                                                                                                                                                                                              |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Dependency/config verification | Supabase client, native SecureStore, web AsyncStorage, URL polyfill, TanStack Query, Expo Network, and the SecureStore config plugin are installed. Expo Doctor passes 20/20 checks.                                |
+| Static quality                 | `npm run fmt`, `npm run fmt:check`, type-aware `npm run lint`, and strict `npm run typecheck` pass.                                                                                                                 |
+| Architectural boundary         | PASS: raw `@supabase/supabase-js` imports exist only under `src/lib/supabase`; screens and providers consume the boundary API.                                                                                      |
+| Session/query lifecycle        | Implemented: lazy singleton client, platform storage, `processLock`, foreground refresh with cleanup, singleton Query client, network manager, AppState focus manager, key factories, and conservative retry rules. |
+| iOS runtime                    | PASS in Expo Go 57.0.6 on iPhone 17 Pro / iOS 26.5; bundle completed in 3694 ms with no red-screen exception. Evidence SHA-256: `b0e8e18f6ce58e7eb1a266de5533a89794be87c47e956c4957439d2cf1faafa5`.                 |
+| Expected runtime warning       | Expo warns that production linking requires a scheme; this is the explicit ADR 0001 deferral. Expo also confirms a development build needs native identifiers.                                                      |
+| Generated database typing      | INCOMPLETE: the client cannot receive the required generated `Database` generic until Phase 6 generation can run. It is SDK-typed only and is not represented as schema-typed.                                      |
+| Unit tests / Android           | INCOMPLETE: lifecycle/Query unit tests await the test-tooling phase; Android tooling/emulator remains unavailable.                                                                                                  |
+
+Phase 7 is implemented except for generated schema typing and acceptance tests blocked by earlier prerequisites/tooling.
