@@ -13,7 +13,8 @@
     "lint": "oxlint --type-aware",
     "lint:fix": "oxlint --type-aware --fix",
     "typecheck": "tsc --noEmit",
-    "quality": "npm run fmt:check && npm run lint && npm run typecheck && npx expo-doctor"
+    "test": "jest",
+    "quality": "npm run fmt:check && npm run lint && npm run typecheck && npm test -- --runInBand && npx expo-doctor"
   },
   "dependencies": {
     "@expo/ui": "~57.0.9",
@@ -68,5 +69,14 @@
     "oxlint-tsgolint": "^7.0.2001",
     "supabase": "^2.113.0",
     "typescript": "~6.0.3"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.ts"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg)"
+    ]
   }
 }

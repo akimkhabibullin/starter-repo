@@ -1,0 +1,9 @@
+process.env.EXPO_PUBLIC_APP_ENV = 'development';
+process.env.EXPO_PUBLIC_APP_NAME = 'Map Starter Test';
+process.env.EXPO_PUBLIC_SUPABASE_URL = 'https://test.supabase.co';
+process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY = `sb_publishable_${'x'.repeat(24)}`;
+process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID = 'test.apps.googleusercontent.com';
+process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID = 'test.apps.googleusercontent.com';
+process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID = 'test.apps.googleusercontent.com';
+process.env.EXPO_PUBLIC_GOOGLE_MAPS_ANDROID_API_KEY = 'test-google-maps-key-1234';
+process.env.EXPO_PUBLIC_SENTRY_DSN = 'https://public@example.ingest.sentry.io/1';
