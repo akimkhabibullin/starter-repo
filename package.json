@@ -14,6 +14,8 @@
     "lint:fix": "oxlint --type-aware --fix",
     "typecheck": "tsc --noEmit",
     "test": "jest",
+    "db:types": "sh scripts/generate-db-types.sh",
+    "db:types:check": "sh scripts/check-db-types.sh",
     "quality": "npm run fmt:check && npm run lint && npm run typecheck && npm test -- --runInBand && npx expo-doctor"
   },
   "dependencies": {
