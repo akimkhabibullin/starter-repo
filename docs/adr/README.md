@@ -2,6 +2,8 @@
 
 Create one Markdown file per decision using the next sequential number, for example `0001-session-storage-adapter.md`.
 
+Copy `template.md` for new decisions; do not edit the template in place.
+
 Each ADR records:
 
 - status and date;
