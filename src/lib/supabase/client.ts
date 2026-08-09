@@ -6,6 +6,8 @@ import { getClientEnv } from '@/config/env';
 
 import { sessionStorage } from './session-storage';
 
+export type { Session } from '@supabase/supabase-js';
+
 let client: SupabaseClient | undefined;
 
 export function getSupabaseClient(): SupabaseClient {

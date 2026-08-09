@@ -28,6 +28,7 @@
     "scripts/**",
     "src/types/database.generated.ts",
     "supabase/.branches/**",
+    "supabase/functions/**",
     "supabase/.temp/**"
   ]
 }

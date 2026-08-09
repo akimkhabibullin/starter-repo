@@ -1,46 +1,64 @@
-// Follow this setup guide to integrate the Deno language server with your editor:
-// https://deno.land/manual/getting_started/setup_your_environment
-// This enables autocomplete, go to definition, etc.
+import '@supabase/functions-js/edge-runtime.d.ts';
+import { withSupabase } from '@supabase/server';
 
-// Setup type definitions for built-in Supabase Runtime APIs
-import "@supabase/functions-js/edge-runtime.d.ts";
-import { withSupabase } from "@supabase/server";
+const JSON_HEADERS = { 'Content-Type': 'application/json' };
 
-console.log("Hello from Functions!");
-
-// This endpoint uses 'publishable' | 'secret' access, apiKey is required.
-// Use publishable for Client-facing, key-validated endpoints
-// Use secret for Server-to-server, internal calls
 export default {
-  fetch: withSupabase({ auth: ["publishable", "secret"] }, async (req, ctx) => {
-    // Called by another service with a secret key
-    // ctx.supabaseAdmin bypasses RLS — use for privileged operations
-    /*
-    if (ctx.authMode === "secret") {
-      const { user_id } = await req.json();
-      const { data } = await ctx.supabaseAdmin.auth.admin.getUserById(user_id);
-
-      return Response.json({
-        email: data?.user?.email,
+  fetch: withSupabase({ auth: 'user' }, async (request, context) => {
+    if (request.method !== 'POST') {
+      return new Response(JSON.stringify({ error: 'method_not_allowed' }), {
+        status: 405,
+        headers: { ...JSON_HEADERS, Allow: 'POST' },
       });
     }
-    */
 
-    const { name } = await req.json();
+    const userId = context.userClaims.sub;
+    if (!userId) {
+      return new Response(JSON.stringify({ error: 'unauthorized' }), {
+        status: 401,
+        headers: JSON_HEADERS,
+      });
+    }
 
-    return Response.json({
-      message: `Hello ${name}!`,
+    const { data, error: lookupError } = await context.supabaseAdmin.auth.admin.getUserById(userId);
+
+    if (lookupError?.status === 404) {
+      return new Response(JSON.stringify({ deleted: true }), {
+        status: 200,
+        headers: JSON_HEADERS,
+      });
+    }
+
+    if (lookupError || !data.user) {
+      console.error('Account deletion identity lookup failed.');
+      return new Response(JSON.stringify({ error: 'deletion_temporarily_unavailable' }), {
+        status: 503,
+        headers: JSON_HEADERS,
+      });
+    }
+
+    const hasAppleIdentity = data.user.identities?.some(
+      (identity) => identity.provider === 'apple',
+    );
+    if (hasAppleIdentity) {
+      return new Response(JSON.stringify({ error: 'apple_reauthentication_required' }), {
+        status: 409,
+        headers: JSON_HEADERS,
+      });
+    }
+
+    const { error: deleteError } = await context.supabaseAdmin.auth.admin.deleteUser(userId);
+    if (deleteError) {
+      console.error('Account deletion failed.');
+      return new Response(JSON.stringify({ error: 'deletion_temporarily_unavailable' }), {
+        status: 503,
+        headers: JSON_HEADERS,
+      });
+    }
+
+    return new Response(JSON.stringify({ deleted: true }), {
+      status: 200,
+      headers: JSON_HEADERS,
     });
   }),
 };
-
-/* To invoke locally:
-
-  1. Run `supabase start` (see: https://supabase.com/docs/reference/cli/supabase-start)
-  2. Make an HTTP request:
-
-  curl -i --location --request POST 'http://127.0.0.1:54321/functions/v1/delete-account' \
-    --header 'apiKey: sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH' \
-    --data '{"name":"Functions"}'
-
-*/

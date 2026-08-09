@@ -1,4 +1,3 @@
-import type { Session } from '@supabase/supabase-js';
 import {
   createContext,
   type PropsWithChildren,
@@ -9,7 +8,7 @@ import {
 } from 'react';
 import * as Linking from 'expo-linking';
 
-import { getSupabaseClient } from '@/lib/supabase/client';
+import { getSupabaseClient, type Session } from '@/lib/supabase/client';
 
 import { processAuthRedirect } from './api';
 
