@@ -277,3 +277,19 @@ ADR 0002 records the required social-auth storage choice. `react-native-url-poly
 | Unit tests / Android           | INCOMPLETE: lifecycle/Query unit tests await the test-tooling phase; Android tooling/emulator remains unavailable.                                                                                                  |
 
 Phase 7 is implemented except for generated schema typing and acceptance tests blocked by earlier prerequisites/tooling.
+
+## Phase 8 — Forms and authentication
+
+Documentation gate accessed 2026-08-08:
+
+| Official URL                                                                         | Heading used                              | Selected command/pattern                                                                                                                                              |
+| ------------------------------------------------------------------------------------ | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| https://supabase.com/docs/guides/auth/passwords                                      | Email sign-up/sign-in and password reset  | Use `signUp`, `signInWithPassword`, `resetPasswordForEmail`, and `updateUser`; preserve generic reset responses to prevent account enumeration.                       |
+| https://supabase.com/docs/guides/auth/quickstarts/with-expo-react-native-social-auth | Google authentication                     | Current mobile guidance uses Supabase `signInWithOAuth`; the free native Google library is explicitly unsuitable because it cannot provide the required custom nonce. |
+| https://supabase.com/docs/guides/auth/social-login/auth-google                       | Provider project setup                    | Web client ID must be first when multiple Google client IDs are configured in Supabase.                                                                               |
+| https://supabase.com/docs/guides/auth/native-mobile-deep-linking                     | Expo deep-link setup and OAuth handler    | A custom URL scheme is required for development/standalone native redirects; parse returned tokens and establish the Supabase session.                                |
+| https://docs.expo.dev/versions/latest/sdk/auth-session/                              | Installation and standalone configuration | `npx expo install expo-auth-session expo-crypto`; standalone OAuth cannot return to an app with no scheme.                                                            |
+| https://docs.expo.dev/router/advanced/protected/                                     | Protected routes                          | Guard public/authenticated route groups with `Stack.Protected`.                                                                                                       |
+| https://github.com/react-hook-form/resolvers                                         | Installation and Zod resolver             | `npm install react-hook-form @hookform/resolvers zod`; use `zodResolver` with Zod 4 inference and no casts.                                                           |
+
+Selected form install command: `npm install react-hook-form @hookform/resolvers zod`. Apple auth, legal/acceptable-use acknowledgement, and production native redirect setup remain excluded by ADR 0001 and the user's explicit scope amendment. Google OAuth, email confirmation redirects, and password-reset redirects can be implemented only as configuration-aware flows and cannot pass native acceptance while the scheme is omitted.
