@@ -157,3 +157,16 @@ Documentation gate accessed 2026-08-08:
 | https://docs.expo.dev/router/introduction/          | `Quick start`; `Key features`                                       | Keep file-based routes under `src/app` and compose public/authenticated route groups. |
 
 ADR 0001 makes native identity, scheme, Apple, and legal/support variables optional/deferred. Required Supabase, Google, Sentry, environment-name, and generic app-name values remain validated. Selected install command: `npm install zod`.
+
+### Phase 3 verification
+
+| Check                                 | Result                                                                                                                                                                                                                                                                                       |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Missing/deferred environment behavior | Development schema treats ADR 0001 fields as optional and rejects missing release fields when `EXPO_PUBLIC_APP_ENV=production`. Invalid required service values produce a generic configuration screen; development displays field names only. No environment values are included in errors. |
+| Static Expo variable access           | All client variables are read with explicit `process.env.EXPO_PUBLIC_NAME` dot notation in `src/config/env.ts`. No private CLI/server variables are imported.                                                                                                                                |
+| Quality suite                         | `npm run fmt`, `npm run fmt:check`, `npm run lint`, `npm run typecheck`, and `npx expo-doctor` pass; Expo Doctor 20/20.                                                                                                                                                                      |
+| Generated scaffold launch             | iPhone 17 Pro, iOS 26.5, Expo Go 57.0.6: PASS before demo removal. Bundle completed in 5766 ms with no red-screen exception. Expo warned that a production scheme is required, as expected under ADR 0001.                                                                                   |
+| Generic shell launch                  | iPhone 17 Pro, iOS 26.5: PASS. Public route rendered app name, starter status, and accessible home action. Evidence SHA-256: `a82ca36eb74c21c029a33a86a3018f622e8d123d0b8e7bae09509570db8b0497`.                                                                                             |
+| Android launch                        | INCOMPLETE: Android Platform Tools/emulator remain unavailable.                                                                                                                                                                                                                              |
+
+Phase 3 implementation is committed. Two-platform acceptance remains incomplete.
