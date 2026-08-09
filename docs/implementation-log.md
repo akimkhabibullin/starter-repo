@@ -234,3 +234,15 @@ Documentation gate accessed 2026-08-08:
 | https://supabase.com/docs/guides/api/rest/generating-types          | Generating types using Supabase CLI | Local output form is `npx supabase gen types typescript --local > database.types.ts`; generation requires an inspectable database. |
 
 Selected generated-test command: `npx supabase test new map_starter_rls.test`. Selected test command: `npx supabase test db`. The committed application type target will be `src/types/database.generated.ts` once CLI generation can run. Because neither the local database nor a real linked remote is available, no handwritten substitute for generated database types is permitted.
+
+### Phase 6 verification
+
+| Command/check                                             | Result                                                                                                                                                        |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npx supabase test new map_starter_rls.test`              | PASS; CLI 2.113.0 generated `supabase/tests/map_starter_rls.test_test.sql`, committed untouched before implementation.                                        |
+| Test coverage audit                                       | PASS; the implemented transaction plans 23 pgTAP assertions and represents every minimum behavior listed in Phase 6.                                          |
+| `npx supabase test db`                                    | BLOCKED: connection refused at local Postgres because the Docker-compatible local stack is unavailable. No assertion has been represented as executed.        |
+| `npx supabase gen types typescript --local`               | BLOCKED: neither Docker nor Podman is installed/on `PATH`. The command was checked without shell redirection so no empty or misleading type file was created. |
+| Generated type and `db:types`/`db:types:check` acceptance | INCOMPLETE: generation and drift scripts remain deferred together so the repository cannot mistake handwritten or empty output for database-generated types.  |
+
+Phase 6 tests are implemented but not executed. Generated database types remain blocked, so Phase 6 is not accepted.
