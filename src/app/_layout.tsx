@@ -1,18 +1,23 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme } from 'react-native';
+import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
+import { AppErrorBoundary } from '@/components/app-error-boundary';
+import { ConfigurationScreen } from '@/components/configuration-screen';
+import { clientEnvResult, getClientEnvIssueFields } from '@/config/env';
 
-void SplashScreen.preventAutoHideAsync();
+export default function RootLayout() {
+  if (!clientEnvResult.success) {
+    return <ConfigurationScreen issueFields={getClientEnvIssueFields()} />;
+  }
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
-    </ThemeProvider>
+    <AppErrorBoundary>
+      <StatusBar style="auto" />
+      <Stack screenOptions={{ headerBackButtonDisplayMode: 'minimal' }}>
+        <Stack.Screen name="(public)" options={{ headerShown: false }} />
+        <Stack.Screen name="(authenticated)" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" options={{ title: 'Not found' }} />
+      </Stack>
+    </AppErrorBoundary>
   );
 }

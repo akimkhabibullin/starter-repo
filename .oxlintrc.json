@@ -11,6 +11,7 @@
     "import/no-cycle": "warn",
     "react/jsx-key": "error",
     "react/react-in-jsx-scope": "off",
+    "react/style-prop-object": "off",
     "typescript/await-thenable": "error",
     "typescript/no-explicit-any": "error",
     "typescript/no-floating-promises": "error",
