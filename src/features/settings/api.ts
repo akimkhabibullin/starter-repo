@@ -1,4 +1,5 @@
 import { ApplicationError, normalizeApplicationError } from '@/lib/supabase/errors';
+import { analytics } from '@/lib/analytics';
 import { getSupabaseClient } from '@/lib/supabase/client';
 
 export interface BlockedUser {
@@ -49,6 +50,7 @@ export async function deleteAccount(): Promise<void> {
     throw normalizeApplicationError(error);
   }
 
+  analytics.capture({ name: 'account_deletion_succeeded', properties: {} });
   const { error: signOutError } = await supabase.auth.signOut({ scope: 'local' });
   if (signOutError) throw normalizeApplicationError(signOutError);
 }

@@ -1,4 +1,5 @@
 import { getSupabaseClient } from '@/lib/supabase/client';
+import { analytics } from '@/lib/analytics';
 import { normalizeApplicationError } from '@/lib/supabase/errors';
 
 import {
@@ -21,6 +22,7 @@ export async function reportContent(input: {
     .insert({ ...targetColumns, reason: draft.reason, details: draft.details });
 
   if (error) throw normalizeApplicationError(error);
+  analytics.capture({ name: 'report_submitted', properties: { target: target.kind } });
 }
 
 export async function blockUser(blockedId: string): Promise<void> {

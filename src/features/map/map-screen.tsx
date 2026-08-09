@@ -3,7 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import * as Location from 'expo-location';
 import { Link } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import MapView, {
   type LongPressEvent,
@@ -18,6 +18,7 @@ import { useAuth } from '@/features/auth/auth-context';
 import { BlockUserButton, ReportForm } from '@/features/moderation/moderation-controls';
 import type { ReportTarget } from '@/features/moderation/schemas';
 import { queryClient } from '@/lib/query/client';
+import { analytics } from '@/lib/analytics';
 import { queryKeys } from '@/lib/query/keys';
 import { normalizeApplicationError } from '@/lib/supabase/errors';
 
@@ -231,6 +232,10 @@ export function CollaborativeMapScreen() {
   const [error, setError] = useState<string>();
   const bounds = useMemo(() => boundsFromRegion(region), [region]);
   const viewportKey = boundsKey(bounds);
+
+  useEffect(() => {
+    analytics.capture({ name: 'map_screen_viewed', properties: {} });
+  }, []);
 
   const items = useQuery({
     queryKey: queryKeys.mapItems.viewport(viewportKey),

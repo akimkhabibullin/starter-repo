@@ -1,4 +1,5 @@
 import { getSupabaseClient } from '@/lib/supabase/client';
+import { analytics } from '@/lib/analytics';
 import { normalizeApplicationError } from '@/lib/supabase/errors';
 
 import {
@@ -75,14 +76,18 @@ export async function createPoint(input: {
   draft: MapItemDraft;
   coordinate: Coordinate;
 }): Promise<string> {
-  return insertMapItem(input.draft, pointWkt(input.coordinate));
+  const id = await insertMapItem(input.draft, pointWkt(input.coordinate));
+  analytics.capture({ name: 'map_item_created', properties: { kind: 'point' } });
+  return id;
 }
 
 export async function createPolygon(input: {
   draft: MapItemDraft;
   vertices: Coordinate[];
 }): Promise<string> {
-  return insertMapItem(input.draft, polygonWkt(input.vertices));
+  const id = await insertMapItem(input.draft, polygonWkt(input.vertices));
+  analytics.capture({ name: 'map_item_created', properties: { kind: 'polygon' } });
+  return id;
 }
 
 export async function updateMapItem(input: { id: string; draft: MapItemDraft }): Promise<void> {

@@ -8,6 +8,7 @@ import {
 } from 'react';
 import * as Linking from 'expo-linking';
 
+import { analytics } from '@/lib/analytics';
 import { setMonitoringUser } from '@/lib/monitoring';
 import { getSupabaseClient, type Session } from '@/lib/supabase/client';
 
@@ -50,6 +51,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     setMonitoringUser(session?.user.id);
+    if (session?.user.id) analytics.identify(session.user.id);
+    else analytics.reset();
   }, [session?.user.id]);
 
   useEffect(() => {

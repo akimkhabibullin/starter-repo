@@ -2,6 +2,7 @@ import { makeRedirectUri } from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 
 import { getClientEnv } from '@/config/env';
+import { analytics } from '@/lib/analytics';
 import { getSupabaseClient } from '@/lib/supabase/client';
 import { ApplicationError, normalizeApplicationError } from '@/lib/supabase/errors';
 
@@ -66,6 +67,7 @@ export async function processAuthRedirect(url: string): Promise<void> {
 export async function signInWithEmail(values: Credentials): Promise<void> {
   const { error } = await getSupabaseClient().auth.signInWithPassword(values);
   throwIfError(error);
+  analytics.capture({ name: 'sign_in_succeeded', properties: { method: 'email' } });
 }
 
 export async function signUpWithEmail(values: SignUp): Promise<{ confirmationRequired: boolean }> {
@@ -118,5 +120,6 @@ export async function signInWithGoogle(): Promise<GoogleSignInResult> {
   if (response.type !== 'success') return 'cancelled';
 
   await processAuthRedirect(response.url);
+  analytics.capture({ name: 'sign_in_succeeded', properties: { method: 'google' } });
   return 'signed-in';
 }
