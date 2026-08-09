@@ -15,6 +15,8 @@ import MapView, {
 
 import { Screen } from '@/components/screen';
 import { useAuth } from '@/features/auth/auth-context';
+import { BlockUserButton, ReportForm } from '@/features/moderation/moderation-controls';
+import type { ReportTarget } from '@/features/moderation/schemas';
 import { queryClient } from '@/lib/query/client';
 import { queryKeys } from '@/lib/query/keys';
 import { normalizeApplicationError } from '@/lib/supabase/errors';
@@ -224,6 +226,7 @@ export function CollaborativeMapScreen() {
   const [creationDraft, setCreationDraft] = useState<CreationDraft>();
   const [editingItem, setEditingItem] = useState(false);
   const [editingUpdate, setEditingUpdate] = useState<MapUpdate>();
+  const [reportTarget, setReportTarget] = useState<ReportTarget>();
   const [status, setStatus] = useState<string>();
   const [error, setError] = useState<string>();
   const bounds = useMemo(() => boundsFromRegion(region), [region]);
@@ -601,6 +604,43 @@ export function CollaborativeMapScreen() {
             )
           ) : null}
 
+          <View style={styles.buttonRow}>
+            <Pressable
+              accessibilityRole="button"
+              onPress={() =>
+                setReportTarget({
+                  kind: 'map_item',
+                  id: selectedItem.id,
+                  authorId: selectedItem.author_id,
+                })
+              }
+              style={styles.reportAction}
+            >
+              <Text style={styles.reportActionText}>Report item</Text>
+            </Pressable>
+            {selectedItem.author_id !== session?.user.id ? (
+              <BlockUserButton
+                authorId={selectedItem.author_id}
+                onBlocked={() => {
+                  setSelectedId(undefined);
+                  setStatus('User blocked. Their content is now hidden.');
+                }}
+              />
+            ) : null}
+          </View>
+
+          {reportTarget?.kind === 'map_item' && reportTarget.id === selectedItem.id ? (
+            <ReportForm
+              key={reportTarget.id}
+              onCancel={() => setReportTarget(undefined)}
+              onSubmitted={() => {
+                setReportTarget(undefined);
+                setStatus('Report submitted for human review.');
+              }}
+              target={reportTarget}
+            />
+          ) : null}
+
           <Text accessibilityRole="header" style={styles.subsectionTitle}>
             Collaborative updates
           </Text>
@@ -642,6 +682,41 @@ export function CollaborativeMapScreen() {
                         <Text style={styles.dangerLink}>Delete</Text>
                       </Pressable>
                     </View>
+                  ) : null}
+                  <View style={styles.buttonRow}>
+                    <Pressable
+                      accessibilityRole="button"
+                      onPress={() =>
+                        setReportTarget({
+                          kind: 'map_update',
+                          id: update.id,
+                          authorId: update.author_id,
+                        })
+                      }
+                      style={styles.compactButton}
+                    >
+                      <Text style={styles.reportActionText}>Report update</Text>
+                    </Pressable>
+                    {update.author_id !== session?.user.id ? (
+                      <BlockUserButton
+                        authorId={update.author_id}
+                        onBlocked={() => {
+                          setSelectedId(undefined);
+                          setStatus('User blocked. Their content is now hidden.');
+                        }}
+                      />
+                    ) : null}
+                  </View>
+                  {reportTarget?.kind === 'map_update' && reportTarget.id === update.id ? (
+                    <ReportForm
+                      key={reportTarget.id}
+                      onCancel={() => setReportTarget(undefined)}
+                      onSubmitted={() => {
+                        setReportTarget(undefined);
+                        setStatus('Report submitted for human review.');
+                      }}
+                      target={reportTarget}
+                    />
                   ) : null}
                 </>
               )}
@@ -748,4 +823,10 @@ const styles = StyleSheet.create({
   compactButton: { minHeight: 44, justifyContent: 'center', paddingHorizontal: 8 },
   linkText: { fontSize: 15, fontWeight: '700', color: '#1D4ED8' },
   dangerLink: { fontSize: 15, fontWeight: '700', color: '#B91C1C' },
+  reportAction: {
+    minHeight: 44,
+    justifyContent: 'center',
+    paddingHorizontal: 8,
+  },
+  reportActionText: { fontSize: 15, fontWeight: '700', color: '#B45309' },
 });
