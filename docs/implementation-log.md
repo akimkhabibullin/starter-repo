@@ -390,3 +390,16 @@ This phase will implement report actions, bounded Zod-validated report input, us
 | Explicitly deferred baseline  | INCOMPLETE by user direction: acceptable-use acknowledgement and published support/contact information are not present. This starter therefore does not satisfy the complete App Review Guideline 1.2 baseline, regardless of the implemented technical safeguards.                                                             |
 
 Phase 11 is partially implemented. Technical report/block/removal hooks and the human runbook are present, while required external contact/acceptable-use elements are excluded and multi-user behavior remains untested.
+
+## Phase 12 — Sentry
+
+Documentation gate accessed 2026-08-08:
+
+| Official URL                                                                         | Heading used                      | Selected command/pattern                                                                                                                                              |
+| ------------------------------------------------------------------------------------ | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| https://docs.expo.dev/guides/using-sentry/                                           | Use the Sentry wizard             | Run exactly `npx @sentry/wizard@latest -i reactNative`; commit its untouched output before hardening.                                                                 |
+| https://docs.expo.dev/guides/using-sentry/                                           | Usage with EAS Build / EAS Update | Store `SENTRY_AUTH_TOKEN` with sensitive visibility; after `eas update`, run `npx sentry-expo-upload-sourcemaps dist`; attach update metadata through global tags.    |
+| https://docs.sentry.io/platforms/react-native/manual-setup/expo/                     | Expo manual setup                 | The official page returned an unsupported Markdown content-type error to the browsing tool; the readable Expo guide remains the normative installation source.        |
+| https://docs.sentry.io/platforms/react-native/guides/expo/sourcemaps/uploading/expo/ | Expo source-map upload            | The official page returned the same tool content-type error. Expo's current guide supplies the wizard, EAS Build token, release-build, and EAS Update upload pattern. |
+
+Selected wizard command: `npx @sentry/wizard@latest -i reactNative`. A names-only preflight confirms that the DSN, auth token, organization slug, and project slug are configured rather than empty or placeholder values; no values were printed. Release-like build and OTA symbolication acceptance still depend on the EAS identity, project, native identifiers, and OTA setup deferred under ADR 0001.
