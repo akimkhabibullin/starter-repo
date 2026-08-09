@@ -27,6 +27,14 @@ const config: ExpoConfig = {
     'expo-router',
     'expo-secure-store',
     [
+      '@sentry/react-native/expo',
+      {
+        url: 'https://sentry.io/',
+        project: 'javascript-nextjs',
+        organization: 'akims-apps',
+      },
+    ],
+    [
       'expo-location',
       {
         locationWhenInUsePermission:
