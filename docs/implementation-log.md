@@ -186,3 +186,7 @@ Documentation gate accessed 2026-08-08:
 Selected install command: `npx expo install expo-dev-client`.
 
 EAS project initialization, generated `eas.json`, and native development builds are deferred under ADR 0001: the user explicitly omitted the custom scheme, iOS bundle identifier, and Android package identifier, and the local Expo project/token inputs remain placeholders. No hand-written EAS configuration will be substituted for the specification's required CLI-generated output.
+
+### Phase 4 verification
+
+`npx expo install expo-dev-client` installed the SDK 57-compatible module. Formatting, type-aware lint, strict TypeScript, and Expo Doctor pass; Expo Doctor reports 20/20 checks. The first sandboxed Expo Doctor attempt could not resolve the npm registry, so it was repeated with approved network access and passed. EAS initialization and native development-build acceptance remain deferred under ADR 0001.
