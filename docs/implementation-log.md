@@ -492,3 +492,16 @@ Selected generated commands: `npx expo install jest-expo jest @types/jest --dev`
 | Scope boundary                | Component tests exercise JavaScript behavior only and do not represent native iOS/Android implementation as tested. Device behavior remains a Phase 16/manual acceptance responsibility.                                                                                                                                                                           |
 
 Phase 15 is complete for the implemented, non-deferred starter scope.
+
+## Phase 16 — Maestro end-to-end tests
+
+Documentation gate accessed 2026-08-08:
+
+| Official URL                                                       | Heading used                      | Selected command/pattern                                                                                                                                                                           |
+| ------------------------------------------------------------------ | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| https://docs.maestro.dev/maestro-cli/how-to-install-maestro-cli    | Prerequisites / Installation      | Require Java 17+, install the macOS CLI with `curl -fsSL "https://get.maestro.mobile.dev" \| bash`, and verify with `maestro --help`; flows run against an installed app on an emulator/simulator. |
+| https://docs.expo.dev/eas/workflows/examples/e2e-tests/            | Add example Maestro test cases    | Store flows under `.maestro`, declare the real app ID, launch the installed app, and assert visible accessible UI.                                                                                 |
+| https://docs.expo.dev/eas/workflows/examples/e2e-tests/            | Build profile / E2E test workflow | E2E needs an Android APK or iOS simulator `.app`; an EAS build job using an `e2e-test` profile supplies its build ID to a `type: maestro` job.                                                     |
+| https://docs.expo.dev/eas/workflows/syntax/#jobsjob_idtype-maestro | Maestro pre-packaged job          | Maestro jobs are currently alpha; use `flow_path`, a built artifact ID, explicit environment, optional retry/recording controls, and nested-virtualization workers for Android where selected.     |
+
+Preflight: Java 25.0.1 satisfies the Java 17+ prerequisite. Maestro and ADB are not installed. CoreSimulator is unavailable in the restricted environment, and Apple setup is explicitly deferred by ADR 0001. The app also has no Android package or iOS bundle identifier, so no real `appId`, installable native artifact, local device run, or EAS Maestro job can be represented as runnable yet. The repository may include disabled/template-safe flows, but it must not invent a native identity or enable a broken pull-request workflow.
