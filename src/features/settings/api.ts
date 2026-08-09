@@ -47,7 +47,7 @@ export async function deleteAccount(): Promise<void> {
         error,
       );
     }
-    throw normalizeApplicationError(error);
+    throw normalizeApplicationError(status === undefined ? error : { status, cause: error });
   }
 
   analytics.capture({ name: 'account_deletion_succeeded', properties: {} });

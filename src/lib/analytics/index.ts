@@ -19,4 +19,8 @@ class NoopAnalyticsAdapter implements AnalyticsAdapter {
   reset(): void {}
 }
 
-export const analytics: AnalyticsAdapter = new NoopAnalyticsAdapter();
+export function createNoopAnalyticsAdapter(): AnalyticsAdapter {
+  return new NoopAnalyticsAdapter();
+}
+
+export const analytics: AnalyticsAdapter = createNoopAnalyticsAdapter();

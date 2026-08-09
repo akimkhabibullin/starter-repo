@@ -9,6 +9,7 @@ import { Screen } from '@/components/screen';
 import { signOut } from '@/features/auth/api';
 import { useAuth } from '@/features/auth/auth-context';
 import { deleteAccount, listBlockedUsers, unblockUser } from '@/features/settings/api';
+import { canConfirmAccountDeletion } from '@/features/settings/deletion';
 import { throwMonitoringDiagnostic } from '@/lib/monitoring';
 import { queryClient } from '@/lib/query/client';
 import { queryKeys } from '@/lib/query/keys';
@@ -55,6 +56,7 @@ export default function SettingsScreen() {
 
   const metadataName = session?.user.user_metadata.name;
   const displayName = typeof metadataName === 'string' ? metadataName : 'Map Explorer';
+  const deletionAllowed = canConfirmAccountDeletion(deleteConfirmation, deletion.isPending);
 
   return (
     <Screen
@@ -164,15 +166,12 @@ export default function SettingsScreen() {
             />
             <Pressable
               accessibilityRole="button"
-              disabled={deleteConfirmation !== 'DELETE' || deletion.isPending}
+              disabled={!deletionAllowed}
               onPress={() => {
                 setError(undefined);
                 deletion.mutate();
               }}
-              style={[
-                styles.deleteButton,
-                deleteConfirmation !== 'DELETE' || deletion.isPending ? styles.disabled : null,
-              ]}
+              style={[styles.deleteButton, !deletionAllowed ? styles.disabled : null]}
               testID="confirm-delete-account"
             >
               <Text style={styles.deleteButtonText}>

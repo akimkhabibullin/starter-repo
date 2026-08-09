@@ -11,7 +11,7 @@ const optionalConfiguredString = z.preprocess((value) => {
 
 const optionalHttpsUrl = optionalConfiguredString.pipe(z.url().startsWith('https://').optional());
 
-const clientEnvSchema = z
+export const clientEnvSchema = z
   .object({
     appEnv: z.enum(['development', 'preview', 'production']).default('development'),
     appName: z.preprocess(
@@ -89,7 +89,12 @@ const rawClientEnv = {
 };
 
 export type ClientEnv = z.infer<typeof clientEnvSchema>;
-export const clientEnvResult = clientEnvSchema.safeParse(rawClientEnv);
+
+export function parseClientEnv(raw: unknown) {
+  return clientEnvSchema.safeParse(raw);
+}
+
+export const clientEnvResult = parseClientEnv(rawClientEnv);
 
 export function getClientEnv(): ClientEnv {
   if (!clientEnvResult.success) {

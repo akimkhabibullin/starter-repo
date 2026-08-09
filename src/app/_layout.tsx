@@ -7,12 +7,14 @@ import { ConfigurationScreen } from '@/components/configuration-screen';
 import { LoadingScreen } from '@/components/loading-screen';
 import { clientEnvResult, getClientEnvIssueFields } from '@/config/env';
 import { useAuth } from '@/features/auth/auth-context';
+import { getAuthRouteState } from '@/features/auth/routing';
 import { wrapRootComponent } from '@/lib/monitoring';
 
 function AppNavigator() {
   const { restoring, session } = useAuth();
+  const routeState = getAuthRouteState(restoring, Boolean(session));
 
-  if (restoring) {
+  if (routeState === 'loading') {
     return <LoadingScreen label="Restoring your session…" />;
   }
 
@@ -20,10 +22,10 @@ function AppNavigator() {
     <>
       <StatusBar style="auto" />
       <Stack screenOptions={{ headerBackButtonDisplayMode: 'minimal' }}>
-        <Stack.Protected guard={!session}>
+        <Stack.Protected guard={routeState === 'public'}>
           <Stack.Screen name="(public)" options={{ headerShown: false }} />
         </Stack.Protected>
-        <Stack.Protected guard={Boolean(session)}>
+        <Stack.Protected guard={routeState === 'authenticated'}>
           <Stack.Screen name="(authenticated)" options={{ headerShown: false }} />
         </Stack.Protected>
         <Stack.Screen name="+not-found" options={{ title: 'Not found' }} />
