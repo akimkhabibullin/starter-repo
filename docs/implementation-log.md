@@ -367,3 +367,13 @@ Selected install command: `npx expo install react-native-maps expo-location`. Th
 | Clustering gate            | NOT STARTED: the specification permits `supercluster` only after non-clustered points and polygons work. Because that behavioral gate cannot run, no clustering dependency or implementation was added and no clustering success is claimed.                                                                                                 |
 
 Phase 10 remains partially implemented and unaccepted. Its non-clustered production code and test coverage are present, but the required backend/platform behavioral gates and clustering sequence cannot be completed in the current environment.
+
+## Phase 11 — User-generated-content safeguards
+
+Documentation gate accessed 2026-08-08:
+
+| Official URL                                                                    | Heading used                           | Selected requirement/pattern                                                                                                                                                                  |
+| ------------------------------------------------------------------------------- | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| https://developer.apple.com/app-store/review/guidelines/#user-generated-content | Guideline 1.2 — User-Generated Content | Provide content reporting with human response, user blocking, objectionable-content filtering/removal, and published contact information. Do not claim that the starter automates moderation. |
+
+This phase will implement report actions, bounded Zod-validated report input, user blocking, prompt Query invalidation, removed-content handling through the existing RLS/status contract, blocked-user management already present in Settings, and an authorized-human operations runbook. Acceptable-use acknowledgement and published support/contact UI are intentionally omitted under ADR 0001 at the user's direction, so the complete App Review baseline cannot be accepted.
