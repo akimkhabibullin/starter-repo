@@ -465,3 +465,16 @@ Names-only preflight result: both `EXPO_PUBLIC_POSTHOG_API_KEY` and `EXPO_PUBLIC
 | Repository quality suite  | PASS: `npm run fmt`, `npm run lint`, and `npm run typecheck` all complete successfully after the lifecycle wiring.                                                                                                                                    |
 
 Phase 14 is complete in its specification-defined disabled mode. External event receipt verification is not applicable until both PostHog variables are intentionally configured and the optional SDK path is enabled.
+
+## Phase 15 — Jest and React Native Testing Library
+
+Documentation gate accessed 2026-08-08:
+
+| Official URL                                                                    | Heading used                         | Selected command/pattern                                                                                                                                                                                   |
+| ------------------------------------------------------------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| https://docs.expo.dev/develop/unit-testing/                                     | Installation and configuration       | Install with `npx expo install jest-expo jest @types/jest --dev`, use the `jest-expo` preset, and add Jest types for TypeScript.                                                                            |
+| https://docs.expo.dev/develop/unit-testing/                                     | Install React Native Testing Library | Install with `npx expo install @testing-library/react-native --dev`. The June 2026 guide explicitly replaces deprecated `react-test-renderer`, which does not support React 19+, so it will not be installed. |
+| https://reactnative.dev/docs/testing-overview                                   | Mocking / Testing User Interactions  | Mock native modules only at platform boundaries; prefer visible text and accessibility queries over component state, props, implementation details, and snapshot-heavy tests.                              |
+| https://callstack.github.io/react-native-testing-library/12.x/index             | Quick Start                          | Use React Native Testing Library's public render, query, and event APIs for maintainable component behavior tests.                                                                                          |
+
+Selected generated commands: `npx expo install jest-expo jest @types/jest --dev` followed by `npx expo install @testing-library/react-native --dev`. Configuration and test implementation will be committed separately from generated dependency output.
