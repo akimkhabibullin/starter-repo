@@ -308,3 +308,18 @@ Selected form install command: `npm install react-hook-form @hookform/resolvers 
 | Explicitly deferred requirements | Apple sign-in/name capture and acceptable-use/legal acknowledgement are omitted under ADR 0001. Android remains unavailable.                                                                                                                                        |
 
 Phase 8 is partially implemented. Email/password code and protected navigation are present; external/deep-link and two-platform acceptance remain incomplete.
+
+## Phase 9 — Settings and account deletion
+
+Documentation gate accessed 2026-08-08:
+
+| Official URL                                                    | Heading used                         | Selected command/pattern                                                                                                                               |
+| --------------------------------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| https://supabase.com/docs/guides/functions/quickstart           | Create an Edge Function              | Generate with `npx supabase functions new delete-account`, then keep server authorization and deletion logic inside the function.                       |
+| https://supabase.com/docs/guides/functions/auth                 | Supabase Auth with Edge Functions    | Use the current `withSupabase({ auth: 'user' }, ...)` pattern so a validated caller is required and identity comes from authenticated claims.           |
+| https://supabase.com/docs/guides/functions/secrets              | Production secrets                   | Keep server credentials in hosted Function secrets; never commit or print secret values.                                                               |
+| https://supabase.com/docs/reference/javascript/auth-admin-deleteuser | Delete a user                     | Call `auth.admin.deleteUser` only from trusted server code through the service-role-capable admin client.                                               |
+| https://docs.expo.dev/versions/latest/sdk/application/          | Installation and API                 | Install with `npx expo install expo-application`; expose native version/build identifiers with development fallbacks.                                   |
+| https://docs.expo.dev/versions/latest/sdk/updates/              | Installation and API                 | Install with `npx expo install expo-updates`; update/channel identifiers may be absent in Expo Go and development builds and must render safe fallbacks. |
+
+The Settings implementation will include profile summary, blocked-user management, sign out, build/version/update identifiers, and explicit destructive account-deletion confirmation. Privacy, terms, support, Apple setup, and Apple revocation are omitted under ADR 0001 at the user's direction. To prevent an unsafe partial implementation, the deletion function will reject Apple-linked accounts without deleting them; non-Apple authenticated users remain eligible for server-side deletion. Full Apple-linked deletion acceptance is therefore explicitly incomplete.
