@@ -5,6 +5,7 @@ import { AppState, Platform, type AppStateStatus } from 'react-native';
 import { configureQueryOnlineManager, queryClient } from '@/lib/query/client';
 import { getSupabaseClient } from '@/lib/supabase/client';
 import { createSessionRefreshLifecycle } from '@/lib/supabase/session-refresh';
+import { AuthProvider } from '@/features/auth/auth-context';
 
 configureQueryOnlineManager();
 
@@ -32,5 +33,9 @@ export function AppProviders({ children }: PropsWithChildren) {
     return () => subscription.remove();
   }, []);
 
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>{children}</AuthProvider>
+    </QueryClientProvider>
+  );
 }

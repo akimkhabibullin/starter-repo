@@ -13,15 +13,18 @@ export default function WelcomeScreen() {
       description="A production-oriented collaborative map starter with typed data boundaries."
     >
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Starter status</Text>
-        <Text style={styles.body}>Public navigation and environment validation are active.</Text>
-        <Link href="/home" asChild>
-          <Pressable accessibilityRole="button" style={styles.button} testID="open-starter-home">
-            <Text style={styles.buttonText}>Open starter home</Text>
+        <Text style={styles.cardTitle}>Welcome</Text>
+        <Text style={styles.body}>Sign in to open the collaborative map starter.</Text>
+        <Link href="/sign-in" asChild>
+          <Pressable accessibilityRole="button" style={styles.button} testID="open-sign-in">
+            <Text style={styles.buttonText}>Sign in</Text>
           </Pressable>
         </Link>
+        <Link href="/sign-up" style={styles.link} testID="open-sign-up">
+          Create an account
+        </Link>
         <Text style={styles.note}>
-          Authentication protection replaces this development link in the authentication phase.
+          Protected routes are available only after a session is restored.
         </Text>
       </View>
     </Screen>
@@ -41,5 +44,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
   },
   buttonText: { fontSize: 16, fontWeight: '700', color: '#FFFFFF' },
+  link: { paddingVertical: 8, textAlign: 'center', fontSize: 16, color: '#1D4ED8' },
   note: { fontSize: 14, lineHeight: 20, color: '#64748B' },
 });

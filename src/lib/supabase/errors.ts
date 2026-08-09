@@ -23,10 +23,48 @@ function readNumber(value: unknown, key: string): number | undefined {
   return typeof candidate === 'number' ? candidate : undefined;
 }
 
+function readString(value: unknown, key: string): string | undefined {
+  if (typeof value !== 'object' || value === null || !(key in value)) return undefined;
+  const candidate = Reflect.get(value, key);
+  return typeof candidate === 'string' ? candidate : undefined;
+}
+
 export function normalizeApplicationError(error: unknown): ApplicationError {
   if (error instanceof ApplicationError) return error;
 
   const status = readNumber(error, 'status');
+  const code = readString(error, 'code');
+
+  if (code === 'invalid_credentials') {
+    return new ApplicationError(
+      'authorization',
+      'The email or password is incorrect.',
+      false,
+      error,
+    );
+  }
+
+  if (code === 'email_not_confirmed') {
+    return new ApplicationError(
+      'authorization',
+      'Confirm your email before signing in.',
+      false,
+      error,
+    );
+  }
+
+  if (
+    code === 'over_email_send_rate_limit' ||
+    code === 'over_request_rate_limit' ||
+    status === 429
+  ) {
+    return new ApplicationError(
+      'service',
+      'Too many attempts. Wait a moment before trying again.',
+      false,
+      error,
+    );
+  }
   if (status === 401 || status === 403) {
     return new ApplicationError(
       'authorization',
