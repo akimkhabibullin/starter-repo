@@ -417,3 +417,18 @@ Selected wizard command: `npx @sentry/wizard@latest -i reactNative`. A names-onl
 | Release/source-map acceptance    | INCOMPLETE: the skipped native identifiers/EAS project prevent a release-like build and OTA update. No diagnostic event, correct-project receipt, TypeScript symbolication, sensitive-field inspection, EAS Build upload, or EAS Update source-map upload was represented as passing. `SENTRY_AUTH_TOKEN` was not printed or committed.      |
 
 Phase 12 is partially implemented. The local integration is SDK-compatible and privacy-hardened, but mandatory release and OTA symbolication verification remains blocked by the user's deferred native/EAS identity scope.
+
+## Phase 13 — EAS Update
+
+Documentation gate accessed 2026-08-08:
+
+| Official URL                                       | Heading used                        | Selected command/pattern                                                                                                                                                            |
+| -------------------------------------------------- | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| https://docs.expo.dev/eas-update/getting-started/  | Configure your project              | Run `npx eas-cli@latest update:configure`; it adds `runtimeVersion`, `updates.url`, and `extra.eas.projectId` and can configure preview/production build channels in `eas.json`.    |
+| https://docs.expo.dev/eas-update/getting-started/  | Publish an update / Test the update | SDK 55+ publishing requires explicit `--environment`; preview builds must be exercised before production, and non-development updates apply after download plus restart.            |
+| https://docs.expo.dev/eas-update/runtime-versions/ | Avoiding incompatible updates       | Keep the specification-selected `appVersion` policy, increment the app version for every native runtime change, create a new binary first, and verify on preview before production. |
+| https://docs.expo.dev/build/updates/               | Using EAS Update                    | Align preview/production build profile channels with their update branches and environments.                                                                                        |
+| https://docs.expo.dev/eas/environment-variables/   | Using environment variables         | Select the corresponding named EAS environment explicitly for builds and updates; keep sensitive credentials in EAS with sensitive visibility.                                      |
+| https://docs.expo.dev/guides/using-sentry/         | Usage with EAS Update               | After each `eas update`, upload the generated `dist` source maps with `npx sentry-expo-upload-sourcemaps dist`.                                                                     |
+
+Selected generated command: `npx eas-cli@latest update:configure`. A names-only preflight confirms that Expo owner, project ID, and token are configured without printing values. The command may configure OTA metadata without choosing the explicitly skipped scheme, iOS bundle ID, or Android package; no native build or publish is authorized as part of configuration. OTA behavioral acceptance will remain blocked until native identifiers and builds exist.
