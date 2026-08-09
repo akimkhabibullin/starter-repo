@@ -1,12 +1,8 @@
 import type { ExpoConfig } from 'expo/config';
 
-const expoOwner = process.env.EXPO_OWNER ?? 'REPLACE_ME';
-const expoProjectId = process.env.EXPO_PROJECT_ID ?? 'REPLACE_ME_AFTER_EAS_INIT';
-
 const config: ExpoConfig = {
   name: 'Map Starter',
   slug: 'map-starter',
-  owner: expoOwner,
   version: '1.0.0',
   orientation: 'portrait',
   icon: './assets/images/icon.png',
@@ -64,11 +60,6 @@ const config: ExpoConfig = {
   experiments: {
     typedRoutes: true,
     reactCompiler: true,
-  },
-  extra: {
-    eas: {
-      projectId: expoProjectId,
-    },
   },
 };
 
