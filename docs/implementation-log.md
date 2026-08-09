@@ -223,3 +223,14 @@ Selected install command: `npm install supabase --save-dev`. The remote-link com
 | `npx supabase migration list`                           | BLOCKED: the project is not linked because the supplied project reference remains a placeholder.                                                                                                                       |
 
 Phase 5 schema and migration discipline are implemented, but database execution, lint, inspection, and remote comparison are not accepted until the Docker-compatible runtime and real remote project reference prerequisites exist.
+
+## Phase 6 — Database/RLS tests and generated types
+
+Documentation gate accessed 2026-08-08:
+
+| Official URL                                                        | Heading used                        | Selected command/pattern                                                                                                           |
+| ------------------------------------------------------------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| https://supabase.com/docs/guides/local-development/testing/overview | Database unit testing with pgTAP    | Generate with `npx supabase test new map_starter_rls.test`; use a transaction, role/JWT switching, pgTAP assertions, and rollback. |
+| https://supabase.com/docs/guides/api/rest/generating-types          | Generating types using Supabase CLI | Local output form is `npx supabase gen types typescript --local > database.types.ts`; generation requires an inspectable database. |
+
+Selected generated-test command: `npx supabase test new map_starter_rls.test`. Selected test command: `npx supabase test db`. The committed application type target will be `src/types/database.generated.ts` once CLI generation can run. Because neither the local database nor a real linked remote is available, no handwritten substitute for generated database types is permitted.
