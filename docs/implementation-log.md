@@ -246,3 +246,19 @@ Selected generated-test command: `npx supabase test new map_starter_rls.test`. S
 | Generated type and `db:types`/`db:types:check` acceptance | INCOMPLETE: generation and drift scripts remain deferred together so the repository cannot mistake handwritten or empty output for database-generated types.  |
 
 Phase 6 tests are implemented but not executed. Generated database types remain blocked, so Phase 6 is not accepted.
+
+## Phase 7 — Supabase client and TanStack Query foundation
+
+Documentation gate accessed 2026-08-08:
+
+| Official URL                                                                         | Heading used                           | Selected command/pattern                                                                                                                                                          |
+| ------------------------------------------------------------------------------------ | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| https://supabase.com/docs/guides/getting-started/quickstarts/expo-react-native       | Install and initialize client          | Quickstart currently uses `@supabase/supabase-js`, `react-native-url-polyfill`, and Expo SQLite-backed local storage.                                                             |
+| https://supabase.com/docs/guides/auth/quickstarts/with-expo-react-native-social-auth | Install dependencies; storage adapters | Prefer its `npx expo install @supabase/supabase-js @react-native-async-storage/async-storage expo-secure-store expo-splash-screen` and native SecureStore/web AsyncStorage split. |
+| https://supabase.com/docs/guides/auth/quickstarts/react-native                       | Client initialization                  | Retain `processLock`, persistent sessions, disabled URL session detection, and one foreground/background auto-refresh listener.                                                   |
+| https://docs.expo.dev/versions/latest/sdk/securestore/                               | Installation and API                   | Use SDK-compatible `expo-secure-store` for native auth storage.                                                                                                                   |
+| https://tanstack.com/query/latest/docs/framework/react/installation                  | NPM installation                       | `npm i @tanstack/react-query`.                                                                                                                                                    |
+| https://tanstack.com/query/latest/docs/framework/react/react-native                  | Online status and app focus            | Wire `onlineManager` to `expo-network` and `focusManager` to React Native `AppState`, with cleanup.                                                                               |
+| https://docs.expo.dev/versions/latest/sdk/network/                                   | Installation                           | `npx expo install expo-network`; SDK 57 recommended version is `~57.0.1`.                                                                                                         |
+
+ADR 0002 records the required social-auth storage choice. `react-native-url-polyfill` remains a direct dependency because both current Supabase client examples import it, even though the social-auth installation snippet omits it.
