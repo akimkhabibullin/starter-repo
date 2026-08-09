@@ -26,6 +26,19 @@ const config: ExpoConfig = {
   plugins: [
     'expo-router',
     'expo-secure-store',
+    [
+      'expo-location',
+      {
+        locationWhenInUsePermission:
+          'Allow $(PRODUCT_NAME) to use your location when you choose Use my location.',
+      },
+    ],
+    [
+      'react-native-maps',
+      {
+        androidGoogleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_ANDROID_API_KEY,
+      },
+    ],
     ['expo-web-browser', { experimentalLauncherActivity: false }],
     [
       'expo-splash-screen',
