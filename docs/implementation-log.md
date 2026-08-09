@@ -170,3 +170,19 @@ ADR 0001 makes native identity, scheme, Apple, and legal/support variables optio
 | Android launch                        | INCOMPLETE: Android Platform Tools/emulator remain unavailable.                                                                                                                                                                                                                              |
 
 Phase 3 implementation is committed. Two-platform acceptance remains incomplete.
+
+## Phase 4 — Development client and EAS build configuration
+
+Documentation gate accessed 2026-08-08:
+
+| Official URL                                                   | Heading used                                        | Selected command/pattern                                                                                            |
+| -------------------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| https://docs.expo.dev/develop/development-builds/introduction/ | `Add a development client`; `Start the bundler`     | Install with `npx expo install expo-dev-client`; local native runs use `npx expo run:ios` / `npx expo run:android`. |
+| https://docs.expo.dev/build/introduction/                      | `Get started`; EAS Build overview                   | EAS Build requires Expo account/project setup and platform build configuration.                                     |
+| https://docs.expo.dev/build/eas-json/                          | `Configure EAS Build with eas.json`; build profiles | Generate configuration with `eas build:configure`; development profiles use `developmentClient: true`.              |
+| https://docs.expo.dev/eas/environment-variables/               | EAS environment-variable environments               | Keep development, preview, and production values separated in EAS.                                                  |
+| https://docs.expo.dev/build-reference/simulators/              | iOS Simulator builds                                | Simulator profiles require `ios.simulator: true` and valid iOS project configuration.                               |
+
+Selected install command: `npx expo install expo-dev-client`.
+
+EAS project initialization, generated `eas.json`, and native development builds are deferred under ADR 0001: the user explicitly omitted the custom scheme, iOS bundle identifier, and Android package identifier, and the local Expo project/token inputs remain placeholders. No hand-written EAS configuration will be substituted for the specification's required CLI-generated output.
