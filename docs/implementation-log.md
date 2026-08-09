@@ -443,3 +443,14 @@ Selected generated command: `npx eas-cli@latest update:configure`. A names-only 
 | OTA/build/source-map behavior | NOT STARTED: no preview/production build, update publish, channel separation, update receipt, production isolation, or Sentry OTA source-map upload can be tested. These also require the scheme, bundle/package identifiers, and native builds explicitly deferred under ADR 0001.                                                                                |
 
 Phase 13 is blocked by an EAS project identity mismatch plus the explicitly deferred native identity/build scope. Resolving it requires either a project ID belonging to `map-starter`, explicit approval to create that EAS project, or an explicit decision to rename the starter slug to the existing `test` project; no choice was guessed.
+
+## Phase 14 — Optional PostHog analytics
+
+Documentation gate accessed 2026-08-08:
+
+| Official URL                                    | Heading used                           | Selected command/pattern                                                                                                                                                    |
+| ----------------------------------------------- | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| https://docs.expo.dev/guides/using-posthog/     | Install and configure PostHog          | The current guide prefers the EAS integration and can enable analytics, replay, and error tracking; this starter would select analytics only and disable development sends. |
+| https://posthog.com/docs/libraries/react-native | Capturing events / Identifying / Reset | If enabled, capture only allowlisted coarse events, identify with opaque UUID only, reset after logout, and disable autocapture, replay, and PostHog error tracking.        |
+
+Names-only preflight result: both `EXPO_PUBLIC_POSTHOG_API_KEY` and `EXPO_PUBLIC_POSTHOG_HOST` are missing or placeholders. Per the specification, no PostHog package or external project will be installed/configured. The selected implementation is a typed no-op adapter with an allowlisted event vocabulary and opaque identity/reset methods, wired at lifecycle outcomes so enabling analytics later does not require feature code to import an SDK.
