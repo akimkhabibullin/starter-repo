@@ -190,3 +190,20 @@ EAS project initialization, generated `eas.json`, and native development builds 
 ### Phase 4 verification
 
 `npx expo install expo-dev-client` installed the SDK 57-compatible module. Formatting, type-aware lint, strict TypeScript, and Expo Doctor pass; Expo Doctor reports 20/20 checks. The first sandboxed Expo Doctor attempt could not resolve the npm registry, so it was repeated with approved network access and passed. EAS initialization and native development-build acceptance remain deferred under ADR 0001.
+
+## Phase 5 — Supabase local project and migration discipline
+
+Documentation gate accessed 2026-08-08:
+
+| Official URL                                                             | Heading used                                 | Selected command/pattern                                                                                                                 |
+| ------------------------------------------------------------------------ | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| https://supabase.com/docs/guides/local-development/cli/getting-started   | `Installing the Supabase CLI`; local project | `npm install supabase --save-dev`, then project-scoped commands through `npx supabase`; Node 20+ and Docker-compatible runtime required. |
+| https://supabase.com/docs/guides/local-development/cli-workflows         | `The ./supabase directory`; new-project flow | Commit `config.toml`, migrations, and `seed.sql`; keep generated temporary state ignored; start from `supabase init`.                    |
+| https://supabase.com/docs/guides/local-development/database-migrations   | Create/apply migrations                      | `npx supabase migration new initial_map_starter_schema`; write schema only in the generated migration.                                   |
+| https://supabase.com/docs/guides/local-development/seeding-your-database | `Using seed files`; `Generating seed data`   | Keep synthetic data in the default `supabase/seed.sql`; do not place schema DDL there.                                                   |
+| https://supabase.com/docs/guides/getting-started/api-keys                | Publishable and secret API-key guidance      | Client uses only a publishable key; secret/service-role credentials remain server-only.                                                  |
+| https://supabase.com/docs/guides/database/extensions/postgis             | PostGIS setup and schema troubleshooting     | Enable with `create extension postgis schema extensions`; store SRID 4326 geometries and add a GiST index.                               |
+| https://supabase.com/docs/guides/database/postgres/row-level-security    | Policies, views, and performance             | Target `authenticated`, wrap `auth.uid()` in `select`, index policy columns, and use `security_invoker = true` views.                    |
+| https://supabase.com/docs/guides/realtime/postgres-changes               | Enable Postgres replication                  | Add collaborative tables with `alter publication supabase_realtime add table ...`.                                                       |
+
+Selected install command: `npm install supabase --save-dev`. The remote-link command is deferred until the project reference contains a real non-placeholder value; no password or token will be placed in shell history. Local stack verification remains dependent on a Docker-compatible runtime, which was absent at preflight.
