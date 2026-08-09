@@ -207,3 +207,19 @@ Documentation gate accessed 2026-08-08:
 | https://supabase.com/docs/guides/realtime/postgres-changes               | Enable Postgres replication                  | Add collaborative tables with `alter publication supabase_realtime add table ...`.                                                       |
 
 Selected install command: `npm install supabase --save-dev`. The remote-link command is deferred until the project reference contains a real non-placeholder value; no password or token will be placed in shell history. Local stack verification remains dependent on a Docker-compatible runtime, which was absent at preflight.
+
+### Phase 5 verification
+
+| Command/check                                           | Result                                                                                                                                                                                                                 |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npx supabase --version`                                | PASS with CLI 2.113.0. The sandboxed first attempt could not write the CLI telemetry cache; the approved retry passed.                                                                                                 |
+| `npx supabase init`                                     | PASS; generated `supabase/config.toml` and the local Supabase ignore file, committed without manual edits.                                                                                                             |
+| `npx supabase migration new initial_map_starter_schema` | PASS; generated an empty timestamped migration, committed before SQL implementation.                                                                                                                                   |
+| Static migration audit                                  | PASS against all 19 Phase 5 requirements: PostGIS, geometry constraints/index, application tables, cascade cleanup, triggers, RLS, minimum grants, block filtering, reports, and Realtime publication are represented. |
+| Seed audit                                              | PASS; `supabase/seed.sql` contains synthetic DML only: two placeholder identities, 30 points, one polygon, and two updates. No production or personal data is present.                                                 |
+| `npx supabase start`                                    | BLOCKED: neither Docker nor Podman is installed/on `PATH`.                                                                                                                                                             |
+| `npx supabase db reset`                                 | BLOCKED: the CLI cannot inspect a running local database service.                                                                                                                                                      |
+| `npx supabase db lint`                                  | BLOCKED: connection refused at the local Postgres port because the local stack is not running.                                                                                                                         |
+| `npx supabase migration list`                           | BLOCKED: the project is not linked because the supplied project reference remains a placeholder.                                                                                                                       |
+
+Phase 5 schema and migration discipline are implemented, but database execution, lint, inspection, and remote comparison are not accepted until the Docker-compatible runtime and real remote project reference prerequisites exist.
