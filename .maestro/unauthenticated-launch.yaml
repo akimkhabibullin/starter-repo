@@ -1,0 +1,12 @@
+appId: ${MAESTRO_APP_ID}
+name: Unauthenticated launch
+tags:
+  - smoke
+---
+- launchApp:
+    clearState: true
+- assertVisible: Map Starter
+- assertVisible:
+    id: open-sign-in
+- assertVisible:
+    id: open-sign-up

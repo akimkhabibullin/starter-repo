@@ -1,0 +1,26 @@
+# Copy to .eas/workflows/e2e-test-android.yml only after EAS project linking and
+# a real Android package are configured. This template is intentionally inert.
+name: e2e-test-android
+
+on:
+  pull_request:
+    branches: ['*']
+
+jobs:
+  build_android_for_e2e:
+    type: build
+    params:
+      platform: android
+      profile: e2e-test
+
+  maestro_test:
+    needs: [build_android_for_e2e]
+    type: maestro
+    environment: preview
+    runs_on: linux-large-nested-virtualization
+    params:
+      build_id: ${{ needs.build_android_for_e2e.outputs.build_id }}
+      flow_path: .maestro
+      retries: 1
+      retry_failed_only: true
+      record_screen: true

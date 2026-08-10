@@ -1,0 +1,16 @@
+appId: ${MAESTRO_APP_ID}
+name: Seeded map markers and polygon
+tags:
+  - map
+---
+- runFlow:
+    file: helpers/sign-in.yaml
+    env:
+      FLOW_EMAIL: ${MAESTRO_TEST_EMAIL}
+      FLOW_PASSWORD: ${MAESTRO_TEST_PASSWORD}
+- extendedWaitUntil:
+    visible: Synthetic point 1
+    timeout: 15000
+- assertVisible: Synthetic neighborhood polygon
+- assertVisible: Synthetic point 1 marker
+- assertVisible: Synthetic neighborhood polygon polygon

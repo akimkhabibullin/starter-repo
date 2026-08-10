@@ -1,0 +1,56 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: America/Los_Angeles
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+    commit-message:
+      prefix: chore(deps)
+    groups:
+      expo-native-patch-and-minor:
+        patterns:
+          - expo
+          - expo-*
+          - '@expo/*'
+          - react
+          - react-dom
+          - react-native
+          - react-native-*
+          - '@react-native/*'
+        update-types:
+          - patch
+          - minor
+      javascript-patch-and-minor:
+        patterns:
+          - '*'
+        exclude-patterns:
+          - expo
+          - expo-*
+          - '@expo/*'
+          - react
+          - react-dom
+          - react-native
+          - react-native-*
+          - '@react-native/*'
+        update-types:
+          - patch
+          - minor
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:30'
+      timezone: America/Los_Angeles
+    open-pull-requests-limit: 3
+    labels:
+      - dependencies
+    commit-message:
+      prefix: chore(ci)

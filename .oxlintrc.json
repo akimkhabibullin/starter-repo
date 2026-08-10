@@ -1,0 +1,34 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn"
+  },
+  "plugins": ["react", "import", "promise", "typescript", "jsx-a11y", "oxc"],
+  "rules": {
+    "import/no-unassigned-import": "off",
+    "import/no-cycle": "warn",
+    "react/jsx-key": "error",
+    "react/react-in-jsx-scope": "off",
+    "react/style-prop-object": "off",
+    "typescript/await-thenable": "error",
+    "typescript/no-explicit-any": "error",
+    "typescript/no-floating-promises": "error",
+    "typescript/no-misused-promises": "error"
+  },
+  "options": {
+    "typeAware": true
+  },
+  "ignorePatterns": [
+    ".expo/**",
+    "coverage/**",
+    "dist/**",
+    "node_modules/**",
+    "scripts/**",
+    "src/types/database.generated.ts",
+    "supabase/.branches/**",
+    "supabase/functions/**",
+    "supabase/.temp/**"
+  ]
+}

@@ -1,0 +1,23 @@
+appId: ${MAESTRO_APP_ID}
+name: Disposable account deletion
+tags:
+  - destructive
+---
+- runFlow:
+    file: helpers/sign-in.yaml
+    env:
+      FLOW_EMAIL: ${MAESTRO_DELETE_EMAIL}
+      FLOW_PASSWORD: ${MAESTRO_DELETE_PASSWORD}
+- tapOn:
+    id: open-settings
+- tapOn:
+    id: delete-account
+- tapOn:
+    id: delete-account-confirmation
+- inputText: DELETE
+- hideKeyboard
+- tapOn:
+    id: confirm-delete-account
+- extendedWaitUntil:
+    visible: Map Starter
+    timeout: 15000
